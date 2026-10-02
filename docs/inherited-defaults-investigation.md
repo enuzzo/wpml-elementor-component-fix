@@ -12,6 +12,8 @@ A separate integration session reported two completed translation cycles using *
 
 Do not classify inherited defaults as fixed or infer a universal patch from this report. Preserve the distinction between deserialized observations and raw stored bindings, and between signed preview requests without cookies and ordinary public requests. Obtain read-only raw master/binding evidence and the effective document selected in each context before proposing an implementation. The 1.0.2 candidate had not been installed in the reporting session at the time of this update.
 
+The reporting session subsequently restored the previous site configuration because this unresolved check prevented acceptance under the site's requirements. Migration remains incomplete. This rollback does not establish that the adapter caused the inherited-default behavior, and the successful override/form checks do not resolve that behavior. Candidate 1.0.2 remains uninstalled and unverified live in that session.
+
 ## What the public model establishes
 
 An instance may reference a component without any explicit overrides. Elementor's [instance documentation](https://github.com/elementor/elementor/blob/d82b5ccd2091c21af3bb248878a494bd94989627/docs/atomic-builder/components/instances-and-overrides.md) describes that valid shape. Its [overridable transformer](https://github.com/elementor/elementor/blob/d82b5ccd2091c21af3bb248878a494bd94989627/modules/components/transformers/overridable-transformer.php) starts from the property's origin value and replaces it only when a matching override exists.

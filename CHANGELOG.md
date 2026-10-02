@@ -22,6 +22,7 @@
 - Local PHP syntax checks, all 20 synthetic scenarios and package integrity/checksum checks passed. Consult GitHub Actions for the candidate's branch/commit-specific CI result.
 - Real-stack acceptance remains pending: compare existing translations before/after updating, then test fresh XLIFF export, native import and rendered results, including a second cycle after a source edit.
 - Record two reported cycles for 1.0.1 plus a separate form-name addon, explicitly outside candidate acceptance. Inherited output varied between observations; neither its cause nor a fix is established, and deserialized MCP reads do not expose raw bindings.
+- Record the final reported rollback to the previous site configuration: migration remains incomplete because inherited-default acceptance is unresolved. Candidate 1.0.2 was not installed or verified live.
 
 No 1.0.2 release has been published or installed by this project session. Its live CMS export/import/render cycle remains unverified. The published 1.0.1 tag and release assets remain unchanged.
 
