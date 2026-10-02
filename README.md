@@ -100,7 +100,7 @@ The [official component-override erratum](https://wpml.org/errata/elementor-edit
 
 ### Will it translate inherited component defaults?
 
-No. A value inherited from the component master is not an explicit instance override. This plugin does not manufacture overrides or register master-component properties. Diagnose that field's native WPML workflow separately.
+No. A value inherited from the component master is not an explicit instance override. This plugin does not manufacture overrides or register master-component properties. See the [separate inherited-default investigation](docs/inherited-defaults-investigation.md) for a synthetic fixture design, read-only diagnosis and conditional repair proposals; these are not part of the 1.0.2 runtime.
 
 ### Will it fix every Elementor V4 button or custom widget?
 
