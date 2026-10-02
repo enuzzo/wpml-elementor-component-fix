@@ -53,7 +53,10 @@ Native active-field rules remain authoritative. The plugin does not flatten mast
 | --- | --- |
 | Public original test doubles | 32 isolated scenarios in total, including 12 master-origin scenarios; no vendor implementation or CMS is loaded |
 | Private isolated native-source diagnostic | 28 checks passed locally on the installed node-handler source with original environment stubs: baseline omission, delegated extraction/import, exact text/type/metadata preservation, identity, link preservation, active fields/cache, falsey values and forwarded references |
-| Actual WordPress/WPML jobs, property registry and rendering | Pending for 1.0.3; the local diagnostic does not exercise these layers |
+| Fresh master-job extraction on the site | Reported passed for the frozen 1.0.3 candidate alone in English, French and German; three units per XLIFF, including both direct origins, no duplicates |
+| Native site import, property registry and rendering | Pending for 1.0.3; the local diagnostic does not exercise these layers |
+
+On 2026-10-02, the separate integration session reported that the candidate with SHA-256 `8d40233c3e0b57da28de022fdfd940e5c244074c37cdee5e8fd2fa0222a105b2` was active alone, with the earlier adapter and form addon confirmed inactive. Fresh XLIFF 1.2 exports in all three target languages contained the document title, direct escaped-html heading origin and paragraph origin, preserving strong markup and the entity. This is reported site evidence for extraction only. Target-only validation and native import were the next steps; registry consistency and inherited rendering were not yet confirmed. Raw evidence and job identifiers remain in the site's private storage.
 
 The public master tests also cover working native support, partial HTML support, broken import, exceptions, unsafe mutations, source edits and repeat import, unknown configurations/signatures and coexistence with component/form adapters. The private diagnostic is separate, nonportable integration evidence, not part of public CI.
 

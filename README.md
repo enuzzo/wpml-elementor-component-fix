@@ -33,6 +33,8 @@ Before accepting the candidate on a site:
 
 The candidate's live export/import/render cycle remains unverified. Two cycles were [reported for 1.0.1 plus a separate form-name addon](docs/form-name-compatibility.md#reported-combined-setup-test--2026-10-02), followed by rollback over unresolved inheritance. A later isolated 1.0.2 test reported a master export containing only the document title; no master import was attempted. Neither report validates 1.0.3. Test master and page jobs separately and compare actual raw bindings before/after native import; do not substitute successful activation or an accepted import for these checks.
 
+**Reported 1.0.3 progress — 2026-10-02:** the separate site session verified the frozen candidate active on its own and exported fresh master jobs in English, French and German. Each XLIFF contained the document title, direct heading origin and paragraph origin, preserving markup/entities with no duplicate units. This passes the master extraction gate on that stack; native import, registry consistency and rendered inheritance remain pending. See the [integration evidence](docs/master-origin-compatibility.md#validation-and-limits).
+
 ## The symptom
 
 You build a reusable Elementor V4 component, override a heading or button label in a page instance, and send the page through WPML. Links may appear in the export, while the overridden text does not. An exported component job may contain only its document title. Translating those available fields cannot translate text that was never exported.

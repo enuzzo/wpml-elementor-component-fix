@@ -16,6 +16,7 @@
 ### Validation and limits
 
 - Local synthetic checks pass. A separate local diagnostic passes 28 checks using the installed native node-handler source with environment stubs. Vendor sources and private evidence remain outside the public repository; this diagnostic does not load WordPress or certify a live cycle.
+- A separate site session reported a passing 1.0.3 master extraction gate with the frozen candidate active alone: fresh English/French/German XLIFF exports each contain the document title and both direct text origins, preserving markup/entities without duplicate units. Native import, property-registry consistency and inherited rendering remain pending.
 - The native wrapper resolver supports string and legacy HTML origins but omits escaped-html. Fresh master exports under 1.0.2 and the earlier adapter both reportedly contained only the document title, supporting a pre-existing gap rather than a 1.0.2 regression.
 - General inheritance, null/forwarded bindings, master-language mapping and property-registry synchronization remain outside this narrow fix. The native omission of empty strings and literal `"0"` in master extraction is preserved and is not claimed fixed.
 - Component override and form-name filters are unchanged from 1.0.2. No completed 1.0.3 site test or definitive release is claimed. The published 1.0.1 release and frozen 1.0.2 package remain unchanged.
