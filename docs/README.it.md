@@ -2,7 +2,7 @@
 
 **Netmilk — WPML Elementor Component Fix** è un adattatore temporaneo per i testi degli override espliciti dei componenti V4 che, nel formato `escaped-html`, possono mancare nell'export WPML. Riutilizzabile su siti e lingue diversi: non contiene ID, domini o contenuti di clienti.
 
-Il checkout prepara una **candidata 1.0.4 non pubblicata**, che corregge anche le etichette delle opzioni select delegando a WPML e preservando i valori tecnici. Le etichette duplicate restano distinte anche dopo il riordinamento; `"0"` viene esportato, l’etichetta vuota resta omessa.
+Il checkout prepara una **candidata 1.0.4 non pubblicata**, che corregge anche le etichette delle opzioni select delegando a WPML e preservando i valori tecnici. Le etichette duplicate restano distinte anche dopo il riordinamento; L’estrattore include `"0"` nei test locali, ma i primi XLIFF reali lo omettono; la conservazione del valore dopo import e rendering resta da verificare. L’etichetta vuota resta omessa.
 
 Conserva il comportamento della 1.0.3, che adatta in memoria il tipo `escaped-html` dei testi originari di heading e paragraph esposti dal master, delegando estrazione e import al gestore nativo WPML. Conserva inoltre la correzione dei nomi dei moduli introdotta dalla candidata 1.0.2. Identità e import restano nativi; le configurazioni sconosciute o già gestite non vengono sostituite. I controlli interni su testo e HTML lasciano lavorare WPML quando il supporto nativo funziona. La correzione dei nomi dei moduli resta un controllo di registrazione. La release pubblica resta **1.0.1** e gli ZIP 1.0.2 e 1.0.3 rimangono congelati. [Diagnosi del master e limiti](master-origin-compatibility.md).
 

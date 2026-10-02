@@ -17,9 +17,11 @@ Built by **Netmilk Studio**. Temporary by design, reusable across sites. Indepen
 
 ## What is new in the 1.0.4 candidate?
 
-V4 select options can be registered correctly yet omitted by the native item handler: its collection lookup expects a flat key, and its identifier logic expects an item ID absent from typed options. Candidate 1.0.4 supplies an in-memory collection alias and stable surrogate item IDs derived from unique technical values, then delegates extraction, string naming and import to WPML. It exposes only visible labels for translation; technical values remain unchanged. Duplicate labels stay distinct after reordering, the visible label `"0"` is included, and blank labels remain omitted.
+V4 select options can be registered correctly yet omitted by the native item handler: its collection lookup expects a flat key, and its identifier logic expects an item ID absent from typed options. Candidate 1.0.4 supplies an in-memory collection alias and stable surrogate item IDs derived from unique technical values, then delegates extraction, string naming and import to WPML. It exposes only visible labels for translation; technical values remain unchanged. Duplicate labels stay distinct after reordering. The delegated item extractor includes `"0"` in local checks, but the first live XLIFF exports omit it; blank labels remain omitted.
 
 Native extraction/import probes bypass normalization when the installed handler handles the format correctly. Unknown/custom registrations, ambiguous technical values and identity collisions are not adapted. The component, form-name and master-origin filters are unchanged from 1.0.3. This candidate adds no component-registry synchronization; it allows a fresh select/master/page cycle to establish rendering behavior before any metadata repair. See [select-option behavior and validation](docs/select-option-compatibility.md).
+
+**First live 1.0.4 export — 2026-10-02:** archived English/French/German demo XLIFF files each contain 64 units, including all three human-readable option labels with distinct IDs. The literal zero label has no unit. Its persistence and rendered behavior, along with blank-label behavior, are being checked through native import; omission from XLIFF alone is not yet established as data loss. The frozen candidate remains unchanged while that result is pending.
 
 ## Changes retained from 1.0.3 and 1.0.2
 

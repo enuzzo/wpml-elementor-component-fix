@@ -5,7 +5,7 @@
 ### Fixed
 
 - Delegate the known V4 select-option label registration to the native item handler using an in-memory collection alias and surrogate item IDs derived from unique nonempty technical values. WPML still generates string identities and applies imports; technical values and saved Elementor data structures remain unchanged.
-- Export the visible label `"0"`, preserve distinct identities for duplicate labels across reordering/source edits, and keep blank labels omitted. Reject ambiguous values, colliding names and unexpected native mutations. No temporary IDs or aliases are persisted.
+- Return the visible label `"0"` from the delegated item extractor, preserve distinct identities for duplicate labels across reordering/source edits, and keep blank labels omitted. Reject ambiguous values, colliding names and unexpected native mutations. No temporary IDs or aliases are persisted.
 - Probe native plain/HTML/zero extraction and item import before normalization; defer to working native support and retain conservative configuration/API guards.
 
 ### Validation and limits
@@ -13,6 +13,7 @@
 - Add 12 original select scenarios: 44 isolated public scenarios in total. A separate local diagnostic passes 20 checks on the installed native item handler and outer import dispatcher with environment stubs. These checks do not establish a live site cycle.
 - Keep the 1.0.3 component, master-origin and form-name filters unchanged. Preserve the frozen 1.0.2/1.0.3 packages.
 - Component-registry synchronization remains unimplemented pending a safe native contract and real rendering evidence. This candidate permits a new select/master/page test without speculative metadata writes. Effective site registration and live before/after acceptance remain to be verified.
+- First live 1.0.4 demo exports contain 64 units in each target language, including three human-readable select labels with distinct IDs, confirmed against the archived XLIFF files. The zero label is absent despite passing local item extraction. A downstream falsey filter is only a hypothesis; native import/render checks must establish whether zero/blank values remain intact before any further fix. The package stays frozen.
 
 ## 1.0.3 candidate — unreleased history
 
