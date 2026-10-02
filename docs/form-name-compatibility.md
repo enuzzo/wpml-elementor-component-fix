@@ -46,7 +46,7 @@ The repository session does not install on sites, submit forms or claim a comple
 
 ## Local verification — 2026-10-02
 
-PHP 8.5.11 passed lint on all eight PHP files and all 20 isolated scenarios, including 96 form assertions. Python 3.14.7 built the candidate and verified its exact three-file payload. The original component filter is byte-for-byte unchanged from v1.0.1. The new candidate has no remote CI result yet; the existing green PHP matrix belongs to the published baseline.
+PHP 8.5.11 passed lint on all eight PHP files and all 20 isolated scenarios, including 96 form assertions. Python 3.14.7 built the candidate and verified its exact three-file payload. The original component filter is byte-for-byte unchanged from v1.0.1. At this local verification stage, the candidate had no remote CI result; check [GitHub Actions](https://github.com/enuzzo/wpml-elementor-component-fix/actions/workflows/tests.yml) for subsequent results on the candidate's specific branch and commit. A baseline run does not validate candidate changes.
 
 Candidate ZIP: `dist/netmilk-wpml-component-compat-1.0.2.zip`.
 SHA-256: `9491879a9b14b00b088ec59db1e79d772cac524b7a2fad7d39fd8f5b1c031c41`.

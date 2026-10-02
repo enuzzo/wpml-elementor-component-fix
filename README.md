@@ -13,7 +13,22 @@
 
 Built by **Netmilk Studio**. Temporary by design, reusable across sites. Independent community project; not affiliated with or endorsed by WPML or Elementor.
 
-**Development status:** this checkout contains an unpublished **1.0.2 candidate**, adding a guarded registration for nested V4 form names. The latest published release remains **1.0.1**, which covers component overrides only. See [form-name diagnosis and limits](docs/form-name-compatibility.md); no completed live CMS cycle is claimed for the candidate.
+**Development status:** this branch contains an **unreleased 1.0.2 candidate**. The latest published release remains [**1.0.1**](https://github.com/enuzzo/wpml-elementor-component-fix/releases/tag/v1.0.1), which covers component overrides only. Follow the [changelog](CHANGELOG.md) for pending changes and [GitHub Actions](https://github.com/enuzzo/wpml-elementor-component-fix/actions/workflows/tests.yml) for results on a specific branch and commit. A green CI run does not certify a live CMS translation cycle.
+
+## What is new in the 1.0.2 candidate?
+
+Some V4 forms store their name as a wrapped string, while WPML's configuration points to the containing value. The candidate adds the text path `form-name>value`, retaining the native identity `form-name` and the previous scalar path. Existing nested registrations, custom integrations and unknown configurations are left alone. The component override adapter is unchanged from 1.0.1.
+
+Five additional synthetic scenarios bring the suite to 20. They check registration and extraction/import semantics through original test doubles. The form guard checks configuration; it does not probe the installed WPML form importer. See [the diagnosis and acceptance procedure](docs/form-name-compatibility.md) for the exact limits.
+
+Before accepting the candidate on a site:
+
+1. Record the installed versions and active adapters, prepare backup/rollback, and capture existing translations and a fresh draft XLIFF export **before updating**.
+2. After updating, check those existing translated pages **before any new import** for unintended changes. Isolate the candidate from any local form-name addon during the controlled test so the addon cannot mask its behavior.
+3. Generate fresh WPML jobs, verify one name segment per form and stable identities, translate only targets, and import through WPML. Compare rendered texts, markup, links and form names **after import**, including without authentication.
+4. Change a source name and repeat the cycle. Verify source immutability, preserved wrapper metadata and absence of duplicate fields; restore the previous configuration if a regression appears.
+
+The candidate's live export/import/render cycle remains unverified. Do not substitute successful activation or an accepted import for these checks.
 
 ## The symptom
 

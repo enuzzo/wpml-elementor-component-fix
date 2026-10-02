@@ -91,6 +91,6 @@ This is a historical baseline, not proof of future checkout or dependency state:
 
 ## End-of-session handoff
 
-The subsequent 1.0.2 candidate adds the narrowly scoped [form-name registration correction](form-name-compatibility.md). Keep its status separate from the historical 1.0.1 baseline above: the candidate needs its own CI run and real-stack acceptance before publication. Do not overwrite the published 1.0.1 tag or release assets.
+The subsequent 1.0.2 candidate adds the narrowly scoped [form-name registration correction](form-name-compatibility.md). Keep its status separate from the historical 1.0.1 baseline above: check its own CI result and require real-stack acceptance before release publication. Do not overwrite the published 1.0.1 tag or release assets.
 
 Report the local path, origin, branch and full HEAD commit, then list changed files and whether they are uncommitted, committed, pushed or published. Include commands run, runtime versions, outcomes, artifact path/checksum and any remaining evidence gaps. Record pending documentation work under Unreleased without changing the plugin version. Do not report installation or a release unless it was separately requested and actually completed.
