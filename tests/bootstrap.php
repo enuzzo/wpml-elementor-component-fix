@@ -20,7 +20,13 @@ function add_filter($hook, $callback, $priority) {
     if ($hook !== 'wpml_elementor_widgets_to_translate' || $priority !== 100) {
         throw new RuntimeException('Unexpected registration');
     }
-    $GLOBALS['adapter_filter'] = $callback;
+    $GLOBALS['adapter_filters'][] = $callback;
+    $GLOBALS['adapter_filter'] = function ($widgets) {
+        foreach ($GLOBALS['adapter_filters'] as $filter) {
+            $widgets = $filter($widgets);
+        }
+        return $widgets;
+    };
 }
 $GLOBALS['checks'] = 0;
 function check($condition, $label) {

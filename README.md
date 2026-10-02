@@ -13,6 +13,8 @@
 
 Built by **Netmilk Studio**. Temporary by design, reusable across sites. Independent community project; not affiliated with or endorsed by WPML or Elementor.
 
+**Development status:** this checkout contains an unpublished **1.0.2 candidate**, adding a guarded registration for nested V4 form names. The latest published release remains **1.0.1**, which covers component overrides only. See [form-name diagnosis and limits](docs/form-name-compatibility.md); no completed live CMS cycle is claimed for the candidate.
+
 ## The symptom
 
 You build a reusable Elementor V4 component, override a heading or button label in a page instance, and send the page through WPML. Links may appear in the export, while the overridden text does not. An exported component job may contain only its document title. Translating those available fields cannot translate text that was never exported.
@@ -28,6 +30,7 @@ This adapter targets **explicit instance text overrides stored as `escaped-html`
 | Translation field identifiers and links | Delegated to the installed WPML handler |
 | Working native plain-text **and** HTML round trips | Original native handler retained |
 | Unknown or incompatible native API | Original configuration retained |
+| V4 `e-form` nested name (1.0.2 candidate) | Additional `form-name>value` registration with native `field_id` `form-name`; existing nested/custom registrations retained |
 | Settings, database tables, frontend scripts, network calls, telemetry | None added |
 
 **WPML still owns the translation job and applies the translation.** The plugin does not independently write secondary-language Elementor pages or translate text itself.
@@ -63,14 +66,14 @@ Updates are manual through GitHub release ZIPs. The plugin does not install an u
 | WordPress | Declared minimum 6.5; WordPress runtime not included in the test harness |
 | Elementor | V4 `e-component` instances with explicit `escaped-html` overrides |
 | WPML | Existing `WPML\PB\Elementor\V4\Component\Overrides` handler using the supported untyped method contract |
-| Regression tests | 15 isolated scenarios with original synthetic doubles, covering extraction, import, identities, links, source immutability and conservative fallback |
+| Regression tests | 20 isolated scenarios with original synthetic doubles, including component behavior and form registration semantics; 15 scenarios in published 1.0.1 |
 | Live CMS certification | **Not yet completed for this public release** |
 
 The implementation was informed by a handler contract observed in WPML 4.9.7. Public tests contain original synthetic examples, **not** WPML vendor code or client exports. CI is a PHP/contract check, not a substitute for a real WordPress + Elementor + WPML export/import/render test.
 
 ## Remove it when native support works
 
-The plugin checks native plain-text and HTML extraction/import once per request using synthetic data. If both probes pass, it leaves the native handler in place. This is a **bypass**, not automatic deactivation or uninstallation.
+The plugin checks native plain-text and HTML extraction/import using synthetic data and caches completed support decisions within the request. Exceptions leave the handler unchanged and allow a later filter call to retry. If both probes pass, it leaves the native handler in place. This is a **bypass**, not automatic deactivation or uninstallation.
 
 After an official update, deactivate the adapter on a test site and run a **fresh** translation cycle against the actual fields you use. If export, native import and the rendered page all work, delete it from Plugins. It owns no persistent data. If native support is still incomplete, future jobs may omit text again after deactivation.
 
@@ -86,7 +89,7 @@ No. A value inherited from the component master is not an explicit instance over
 
 ### Will it fix every Elementor V4 button or custom widget?
 
-No. It targets `e-component` override values, not all atomic widgets, custom controls, forms or styling. See [WPML's custom Elementor widget documentation](https://wpml.org/documentation/support/multilingual-tools/registering-custom-elementor-widgets-for-translation/) for a different integration problem.
+No. It targets `e-component` override values and, in the 1.0.2 candidate only, the nested `e-form` name registration. Other atomic widgets, custom controls, form fields/actions and styling remain outside scope. See [WPML's custom Elementor widget documentation](https://wpml.org/documentation/support/multilingual-tools/registering-custom-elementor-widgets-for-translation/) for a different integration problem.
 
 ### Can I reuse it across different sites and languages?
 
@@ -98,11 +101,13 @@ Confirm the value is an explicit `escaped-html` override, generate a fresh job, 
 
 ## Development
 
+Start with [Contributor instructions](AGENTS.md) and the [local development and session handoff guide](docs/development.md) for checkout checks, syntax validation, CI inspection and package verification.
+
 ```sh
 php tests/run.php
 python3 scripts/build.py
 ```
 
-The build uses an explicit payload allowlist and deterministic ZIP metadata. Output: `dist/netmilk-wpml-component-compat-1.0.1.zip` and `dist/SHA256SUMS`. Release assets contain only the PHP entrypoint, WordPress readme and GPL license, inside one plugin folder.
+The build uses an explicit payload allowlist and deterministic ZIP metadata. Current candidate output: `dist/netmilk-wpml-component-compat-1.0.2.zip` and `dist/SHA256SUMS`. Packages contain only the PHP entrypoint, WordPress readme and GPL license, inside one plugin folder. Building the candidate does not publish or replace the 1.0.1 release.
 
 [Contributing](CONTRIBUTING.md) · [Changelog](CHANGELOG.md) · [GPL-2.0-or-later](LICENSE)

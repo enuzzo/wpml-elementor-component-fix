@@ -2,6 +2,8 @@
 
 **Netmilk — WPML Elementor Component Fix** è un adattatore temporaneo per i testi degli override espliciti dei componenti V4 che, nel formato `escaped-html`, possono mancare nell'export WPML. Riutilizzabile su siti e lingue diversi: non contiene ID, domini o contenuti di clienti.
 
+Il checkout contiene ora una **candidata 1.0.2 non pubblicata**, che aggiunge soltanto la registrazione dei nomi dei moduli V4 in `form-name>value`, conservando l'identità `form-name` e il percorso scalare precedente. Se trova già una registrazione annidata o una configurazione personalizzata non riconosciuta, non la modifica. Questo controllo riguarda la configurazione, non prova il funzionamento dell'import reale. La release pubblica resta **1.0.1**. [Diagnosi e limiti della correzione](form-name-compatibility.md).
+
 ## Installazione e prova
 
 1. Scarica lo ZIP installabile dalla [release](https://github.com/enuzzo/wpml-elementor-component-fix/releases/latest), non lo ZIP dei sorgenti GitHub.
@@ -22,5 +24,7 @@ Dopo un aggiornamento ufficiale, disattivalo in un ambiente di prova e verifica 
 ## Stato e limiti
 
 La release pubblica 1.0.1 è verificata con test sintetici del contratto e una matrice CI PHP. Non equivale a una certificazione del runtime WordPress/WPML/Elementor, e il suo ciclo live completo resta da verificare.
+
+La candidata 1.0.2 porta i test sintetici a 20 scenari; il ciclo reale dei moduli resta da verificare. Prima di sostituire un addon locale per i nomi dei moduli, controllarne il comportamento e seguire le istruzioni del progetto del sito: la candidata si astiene quando trova una registrazione annidata esistente, senza certificare quell'addon.
 
 [README completo e FAQ](../README.md) · [Funzionamento tecnico](architecture.md) · [Segnala un problema](https://github.com/enuzzo/wpml-elementor-component-fix/issues/new/choose)

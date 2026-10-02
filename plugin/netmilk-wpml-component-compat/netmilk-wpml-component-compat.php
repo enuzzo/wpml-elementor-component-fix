@@ -1,8 +1,8 @@
 <?php
 /**
  * Plugin Name: Netmilk — WPML Elementor Component Fix
- * Description: Makes Elementor V4 escaped-html component overrides translatable through native WPML export/import. Automatically defers to a working native handler.
- * Version: 1.0.1
+ * Description: Adapts Elementor V4 escaped-html component overrides and nested form names through native WPML translation handling.
+ * Version: 1.0.2
  * Requires PHP: 7.4
  * Requires at least: 6.5
  * Plugin URI: https://github.com/enuzzo/wpml-elementor-component-fix
@@ -153,5 +153,51 @@ add_filter( 'wpml_elementor_widgets_to_translate', function ( $widgets ) {
         $classes[ $position ] = 'Netmilk_WPML_Escaped_HTML_Overrides';
     }
     $widgets['e-component']['integration-class'] = $classes;
+    return $widgets;
+}, 100 );
+
+// Extend only the known flat form-name registration. WPML owns all data access,
+// string identities and import; the scalar path remains available for old data.
+add_filter( 'wpml_elementor_widgets_to_translate', function ( $widgets ) {
+    if ( ! is_array( $widgets ) || ! isset( $widgets['e-form'] ) || ! is_array( $widgets['e-form'] ) ) {
+        return $widgets;
+    }
+    $form = $widgets['e-form'];
+    if ( ! isset( $form['fields'] ) || ! is_array( $form['fields'] )
+        || ( array_key_exists( 'conditions', $form ) && [ 'widgetType' => 'e-form' ] !== $form['conditions'] )
+        || array_diff( array_keys( $form ), [ 'fields', 'conditions' ] ) ) {
+        // Integration classes, repeaters and unknown widget contracts are left alone.
+        return $widgets;
+    }
+    $candidate = null;
+    foreach ( $form['fields'] as $field ) {
+        if ( ! is_array( $field ) || ! isset( $field['field'] ) || ! is_string( $field['field'] ) ) {
+            return $widgets;
+        }
+        $path = $field['field'];
+        if ( 0 === strpos( $path, 'form-name>' ) ) {
+            // Native support or another adapter already owns a nested name path.
+            return $widgets;
+        }
+        if ( 'form-name' !== $path ) {
+            if ( isset( $field['field_id'] ) && 'form-name' === $field['field_id'] ) {
+                return $widgets;
+            }
+            continue;
+        }
+        if ( null !== $candidate
+            || array_diff( array_keys( $field ), [ 'field', 'field_id', 'type', 'editor_type' ] )
+            || ! isset( $field['type'] ) || ! is_string( $field['type'] ) || '' === $field['type']
+            || ( array_key_exists( 'field_id', $field ) && 'form-name' !== $field['field_id'] )
+            || ( array_key_exists( 'editor_type', $field ) && 'LINE' !== $field['editor_type'] ) ) {
+            return $widgets;
+        }
+        $candidate = $field;
+    }
+    if ( null !== $candidate ) {
+        $candidate['field'] = 'form-name>value';
+        $candidate['field_id'] = 'form-name';
+        $widgets['e-form']['fields'][] = $candidate;
+    }
     return $widgets;
 }, 100 );
