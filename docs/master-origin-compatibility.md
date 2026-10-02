@@ -61,6 +61,8 @@ On 2026-10-02, the separate integration session reported that the candidate with
 
 The dedicated component registry is absent from the translated masters despite copied page settings. An extended page export also omitted select labels, so those page jobs were not imported and the site session reported rollback. See [the separate metadata/select investigation](integration-gaps.md); neither gap is repaired by 1.0.3. Raw evidence and job identifiers remain in the site's private storage.
 
+The subsequent 1.0.4 site session reported correct inherited/partial/nested rendering in its first cycle despite registry absence. See [the select/site validation record](select-option-compatibility.md#validation); the second source-edit/reordering cycle remains required before release.
+
 The public master tests also cover working native support, partial HTML support, broken import, exceptions, unsafe mutations, source edits and repeat import, unknown configurations/signatures and coexistence with component/form adapters. The private diagnostic is separate, nonportable integration evidence, not part of public CI.
 
 **Known limits:** the observed native generic handler omits empty text and the literal string `"0"` during extraction. The candidate preserves that behavior. Existing native duplicate identities are not rewritten; the supplemental extractor only prevents adding another copy. Null/forwarded references, ordinary text, native string/legacy HTML origins and unknown types are not adapted. General inherited rendering is not claimed fixed.

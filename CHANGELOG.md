@@ -12,8 +12,8 @@
 
 - Add 12 original select scenarios: 44 isolated public scenarios in total. A separate local diagnostic passes 20 checks on the installed native item handler and outer import dispatcher with environment stubs. These checks do not establish a live site cycle.
 - Keep the 1.0.3 component, master-origin and form-name filters unchanged. Preserve the frozen 1.0.2/1.0.3 packages.
-- Component-registry synchronization remains unimplemented pending a safe native contract and real rendering evidence. This candidate permits a new select/master/page test without speculative metadata writes. Effective site registration and live before/after acceptance remain to be verified.
-- First live 1.0.4 demo exports contain 64 units in each target language, including three human-readable select labels with distinct IDs, confirmed against the archived XLIFF files. The zero label is absent despite passing local item extraction. A downstream falsey filter is only a hypothesis; native import/render checks must establish whether zero/blank values remain intact before any further fix. The package stays frozen.
+- Component-registry synchronization remains unimplemented. The first reported 1.0.4 cycle found no frontend defect from registry absence in its tested fixture; no metadata repair is justified by that result. Final acceptance still requires the second source-edit/reordering cycle.
+- First live 1.0.4 demo exports contain 64 units in each target language, including three human-readable select labels with distinct IDs, confirmed against the archived XLIFF files. The zero label is absent despite passing local item extraction. The site session subsequently reported successful native import and 168 error-free DOM comparisons, with zero preserved in data/rendering. Elementor removes the submitted blank option at source save, before WPML, so four rows persist; live coverage does not include a persisted blank row. The package stays frozen and no additional zero/metadata fix is introduced before the second cycle.
 
 ## 1.0.3 candidate — unreleased history
 
