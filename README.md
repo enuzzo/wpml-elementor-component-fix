@@ -107,7 +107,7 @@ The implementation was informed by a handler contract observed in WPML 4.9.7. Pu
 
 ## Older translations still show missing inherited text
 
-Activation does not migrate old translated masters. A later read-only audit found some legacy `html-v3` origins where the source already used `escaped-html`; their numeric text was present in raw data but missing in resolved/rendered output. This case was not covered by the successful fresh-master demo cycles. Follow the [legacy master recovery guide](docs/legacy-master-recovery.md): authorize a fresh **source master** job through WPML, verify its exported units, import reviewed targets natively, then inspect saved types and inherited rendering. Recovery is not yet verified, and page-only retranslation or direct target edits must not substitute for that gate.
+Activation does not migrate old translated masters. A later read-only audit found some legacy `html-v3` origins where the source already used `escaped-html`; their numeric text was present in raw data but missing in resolved/rendered output. This case was not covered by the successful fresh-master demo cycles. Follow the [legacy master recovery guide](docs/legacy-master-recovery.md): authorize a fresh **source master** job through WPML, verify its exported units, import reviewed targets natively, then inspect saved types and inherited rendering. A subsequent native master job recovered the affected resolved headings and anonymous page output even though XLIFF omitted the numeric `"1"` unit. The guide records that evidence and its limits: exact post-import serialized types were not independently verified here. Page-only retranslation or direct target edits must not substitute for the master workflow.
 
 ## Remove it when native support works
 
