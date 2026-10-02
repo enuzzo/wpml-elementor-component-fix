@@ -1,6 +1,6 @@
 # V4 form-name compatibility — 1.0.2 candidate
 
-The 1.0.2 artifact and the observations below remain historical references. The current [1.0.3 work](master-origin-compatibility.md) keeps this form filter unchanged and investigates a separate master-origin omission; no completed live candidate acceptance is claimed.
+The 1.0.2 artifact and the observations below remain historical references. The subsequent [1.0.3 work](master-origin-compatibility.md) keeps this form filter unchanged and investigates a separate master-origin omission; no completed live candidate acceptance is claimed.
 
 ## Diagnosis
 

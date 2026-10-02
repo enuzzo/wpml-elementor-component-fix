@@ -1,6 +1,6 @@
 # Integration gaps after the 1.0.3 master cycle
 
-This is a diagnosis and evidence handoff, not a runtime extension. The frozen 1.0.3 ZIP is unchanged. No destination writes, metadata patches or new release are introduced.
+This records the 1.0.3 diagnosis and evidence handoff. The frozen 1.0.3 ZIP remains unchanged. The subsequent [1.0.4 candidate](select-option-compatibility.md) addresses select labels only; component-registry synchronization remains unimplemented pending a safe native contract and actual rendering evidence.
 
 ## Master metadata: a separate native synchronization gap
 
@@ -54,9 +54,9 @@ The installed item handler was subsequently supplied privately and inspected. A 
 
 The same diagnostic confirms native omission of the visible label `"0"` and the empty label. The site's expanded source fixture has two identical visible labels with distinct technical values, a zero label and an empty label; its reported DOM renders zero but omits the blank label. Future tests must distinguish those cases, preserve technical values and maintain distinct, stable identities after reordering. Visible labels and numeric positions are insufficient as identity sources.
 
-These isolated findings do not prove which configuration the live job actually loaded. Compare the effective registration with the public rule before selecting a repair. Another registration could duplicate future native support; a compatible adapter would need native extraction/import delegation, safe item identity and insertion-path behavior, plus conservative fallback for ambiguous option values. Select labels remain outside the 1.0.3 runtime; no fix is claimed.
+These isolated findings do not prove which configuration the live job actually loaded. Compare the effective registration with the public rule before selecting a repair. Another registration could duplicate future native support; a compatible adapter would need native extraction/import delegation, safe item identity and insertion-path behavior, plus conservative fallback for ambiguous option values. Select labels remain outside the frozen 1.0.3 runtime. The subsequent [1.0.4 candidate](select-option-compatibility.md) implements guarded native delegation for the known rule, tested locally; effective site registration and its live cycle still require verification.
 
-## Read-only evidence needed before another candidate
+## Remaining read-only integration evidence
 
 Keep installed vendor files and raw site evidence in the site's private storage, outside this repository:
 

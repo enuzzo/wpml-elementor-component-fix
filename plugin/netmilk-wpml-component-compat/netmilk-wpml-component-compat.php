@@ -1,8 +1,8 @@
 <?php
 /**
  * Plugin Name: Netmilk — WPML Elementor Component Fix
- * Description: Adapts Elementor V4 component overrides, nested form names and exposed heading/paragraph origins through native WPML translation handling.
- * Version: 1.0.3
+ * Description: Adapts Elementor V4 component text, form names and select-option labels through native WPML translation handling.
+ * Version: 1.0.4
  * Requires PHP: 7.4
  * Requires at least: 6.5
  * Plugin URI: https://github.com/enuzzo/wpml-elementor-component-fix
@@ -444,3 +444,331 @@ add_filter( 'wpml_elementor_widgets_to_translate', function ( $widgets ) {
     }
     return $widgets;
 }, 100 );
+
+// Adapt the recognized V4 select collection to the native item handler. Synthetic
+// item IDs and the literal collection alias exist only in the delegated copy.
+class Netmilk_WPML_Select_Options {
+    const ITEMS = 'options>value';
+    const LABEL = 'value>key>value';
+    const NATIVE_CLASS = 'WPML\\PB\\Elementor\\Modules\\ModuleWithItemsFromConfig';
+    private static $fields = [];
+    private static $support = [];
+
+    private static function known_contract() {
+        if ( ! class_exists( self::NATIVE_CLASS ) || ! class_exists( 'WPML_PB_String' ) ) {
+            return false;
+        }
+        $class = new ReflectionClass( self::NATIVE_CLASS );
+        if ( ! $class->isInstantiable() ) {
+            return false;
+        }
+        foreach ( [ '__construct' => 2, 'get' => 3, 'update' => 3, 'get_items' => 1,
+            'get_items_field' => 0, 'get_field_path' => 1, 'get_title' => 1,
+            'get_editor_type' => 1, 'get_fields' => 0 ] as $name => $count ) {
+            if ( ! $class->hasMethod( $name ) ) {
+                return false;
+            }
+            $method = $class->getMethod( $name );
+            if ( ! $method->isPublic() || $method->isStatic() || $method->hasReturnType()
+                || $method->getNumberOfParameters() !== $count ) {
+                return false;
+            }
+            foreach ( $method->getParameters() as $index => $parameter ) {
+                $expected = '__construct' === $name && 1 === $index ? 'array'
+                    : ( 'update' === $name && 2 === $index ? 'WPML_PB_String' : null );
+                $type = $parameter->getType();
+                $matches = null === $expected ? null === $type
+                    : $type instanceof ReflectionNamedType && ! $type->allowsNull() && $type->getName() === $expected;
+                if ( ! $matches || $parameter->isPassedByReference() || $parameter->isVariadic() ) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public static function register( $widgets ) {
+        $config = is_array( $widgets ) ? ( $widgets['e-form-select'] ?? null ) : null;
+        if ( ! is_array( $config ) || ! self::known_contract()
+            || ( $config['conditions'] ?? null ) !== [ 'widgetType' => 'e-form-select' ]
+            || ! is_array( $config['fields'] ?? null )
+            || array_diff( array_keys( $config ), [ 'conditions', 'fields', 'fields_in_item' ] )
+            || ! is_array( $config['fields_in_item'] ?? null )
+            || array_keys( $config['fields_in_item'] ) !== [ self::ITEMS ] ) {
+            return $widgets;
+        }
+        foreach ( $config['fields'] as $field ) {
+            if ( ! is_array( $field ) || ! is_string( $field['field'] ?? null )
+                || 'options' === $field['field'] || 0 === strpos( $field['field'], 'options>' ) ) {
+                return $widgets;
+            }
+        }
+        $fields = $config['fields_in_item'][ self::ITEMS ];
+        if ( ! is_array( $fields ) || array_keys( $fields ) !== [ 0 ] ) {
+            return $widgets;
+        }
+        $field = $fields[0];
+        if ( ! is_array( $field ) || ( $field['field'] ?? null ) !== self::LABEL
+            || ! is_string( $field['type'] ?? null ) || '' === $field['type']
+            || ( $field['editor_type'] ?? null ) !== 'LINE'
+            || array_diff( array_keys( $field ), [ 'field', 'type', 'editor_type' ] ) ) {
+            return $widgets;
+        }
+        self::$fields = $fields;
+        unset( $widgets['e-form-select']['fields_in_item'] );
+        $widgets['e-form-select']['integration-class'] = [ __CLASS__ ];
+        return $widgets;
+    }
+
+    private static function handler() {
+        $class = self::NATIVE_CLASS;
+        return new $class( self::ITEMS, self::$fields );
+    }
+
+    private static function items( $element ) {
+        $options = $element['settings']['options'] ?? null;
+        if ( ( $element['widgetType'] ?? null ) !== 'e-form-select'
+            || ! is_array( $element['settings'] ?? null )
+            || array_key_exists( self::ITEMS, $element['settings'] )
+            || ! is_array( $options ) || ( $options['$$type'] ?? null ) !== 'options'
+            || ! is_array( $options['value'] ?? null ) ) {
+            return null;
+        }
+        $items = $options['value'];
+        if ( $items && array_keys( $items ) !== range( 0, count( $items ) - 1 ) ) {
+            return null;
+        }
+        $seen = [];
+        foreach ( $items as $item ) {
+            $label = $item['value']['key'] ?? null;
+            $value = $item['value']['value'] ?? null;
+            if ( ! is_array( $item ) || array_key_exists( '_id', $item )
+                || ( $item['$$type'] ?? null ) !== 'key-value'
+                || ! is_array( $label ) || ( $label['$$type'] ?? null ) !== 'string'
+                || ! is_string( $label['value'] ?? null )
+                || ! is_array( $value ) || ( $value['$$type'] ?? null ) !== 'string'
+                || ! is_string( $value['value'] ?? null ) || '' === $value['value'] ) {
+                return null;
+            }
+            $identity = hash( 'sha256', $value['value'] );
+            if ( isset( $seen[ $identity ] ) ) {
+                return null;
+            }
+            $seen[ $identity ] = true;
+        }
+        return $items;
+    }
+
+    private static function compatible( $element, $items, $extract ) {
+        $labels = array_map( function ( $item ) { return $item['value']['key']['value']; }, $items );
+        $zero_label = 'Netmilk zero-label compatibility value';
+        while ( in_array( $zero_label, $labels, true ) ) {
+            $zero_label .= '.';
+        }
+        foreach ( $items as &$item ) {
+            $item['_id'] = 'netmilk-select-' . substr( hash( 'sha256', $item['value']['value']['value'] ), 0, 24 );
+            if ( $extract && '0' === $item['value']['key']['value'] ) {
+                // The native item extractor uses truthiness. Restore the exact
+                // zero label on its resulting string, retaining the native name.
+                $item['value']['key']['value'] = $zero_label;
+            }
+        }
+        unset( $item );
+        $element['settings'][ self::ITEMS ] = $items;
+        return $element;
+    }
+
+    private static function call_native( $callback ) {
+        // Convert probe diagnostics into a bounded failure and always restore the
+        // caller's handler. Only the known get_items missing-key error is support
+        // evidence; other failures leave the adapter's decision unset.
+        set_error_handler( function ( $severity, $message, $file, $line ) {
+            throw new ErrorException( $message, 0, $severity, $file, $line );
+        } );
+        try {
+            return $callback();
+        } finally {
+            restore_error_handler();
+        }
+    }
+
+    private static function missing_collection( ErrorException $error ) {
+        $method = new ReflectionMethod( self::NATIVE_CLASS, 'get_items' );
+        return in_array( $error->getSeverity(), [ E_NOTICE, E_WARNING ], true )
+            && false !== strpos( $error->getMessage(), self::ITEMS )
+            && $error->getFile() === $method->getFileName()
+            && $error->getLine() >= $method->getStartLine()
+            && $error->getLine() <= $method->getEndLine();
+    }
+
+    private static function native_support( $handler, $node_id, $element ) {
+        $key = md5( serialize( self::$fields ) );
+        if ( array_key_exists( $key, self::$support ) ) {
+            return self::$support[ $key ];
+        }
+        if ( is_callable( [ 'WPML_Elementor_Translatable_Nodes', 'get_active_element_settings' ] ) ) {
+            // A native active-settings cache, when enabled, must see the real
+            // element before the probe substitutes its in-memory option rows.
+            self::call_native( function () use ( $element ) {
+                return WPML_Elementor_Translatable_Nodes::get_active_element_settings( $element );
+            } );
+        }
+        $probe = $element;
+        $items = [];
+        foreach ( [ 'Synthetic option', 'Synthetic <b>option</b> &amp; café', '0' ] as $index => $label ) {
+            $items[] = [ '$$type' => 'key-value', 'value' => [
+                'key' => [ '$$type' => 'string', 'value' => $label ],
+                'value' => [ '$$type' => 'string', 'value' => 'netmilk-select-probe-' . $index ],
+            ] ];
+        }
+        $probe['settings']['options']['value'] = $items;
+        try {
+            $strings = self::call_native( function () use ( $handler, $node_id, $probe ) {
+                return $handler->get( $node_id, $probe, [] );
+            } );
+        } catch ( ErrorException $error ) {
+            if ( self::missing_collection( $error ) ) {
+                self::$support[ $key ] = false;
+                return false;
+            }
+            throw $error;
+        }
+        if ( ! is_array( $strings ) ) {
+            throw new UnexpectedValueException( 'Unknown native select extraction contract' );
+        }
+        $works = count( $strings ) === count( $items );
+        $names = [];
+        foreach ( array_values( $strings ) as $index => $string ) {
+            if ( ! isset( $items[ $index ] ) || ! $string instanceof WPML_PB_String
+                || $string->get_value() !== $items[ $index ]['value']['key']['value']
+                || in_array( $string->get_name(), $names, true ) ) {
+                $works = false;
+                break;
+            }
+            $names[] = $string->get_name();
+            $target = 'Translated: ' . $string->get_value();
+            $translation = new WPML_PB_String( $target, $string->get_name(), self::$fields[0]['type'], 'LINE' );
+            $expected = $items[ $index ];
+            $expected['value']['key']['value'] = $target;
+            $result = self::call_native( function () use ( $handler, $node_id, $probe, $translation ) {
+                return $handler->update( $node_id, $probe, $translation );
+            } );
+            if ( $result !== [ $index, $expected ] ) {
+                $works = false;
+                break;
+            }
+        }
+        self::$support[ $key ] = $works;
+        return $works;
+    }
+
+    private static function extracted( $handler, $node_id, $element, $items ) {
+        $copy = self::compatible( $element, $items, true );
+        $strings = self::call_native( function () use ( $handler, $node_id, $copy ) {
+            return $handler->get( $node_id, $copy, [] );
+        } );
+        $visible = array_filter( $items, function ( $item ) {
+            return '' !== $item['value']['key']['value'];
+        } );
+        if ( ! is_array( $strings ) || count( $strings ) !== count( $visible ) ) {
+            return null;
+        }
+        $strings = array_values( $strings );
+        $names = [];
+        $result = [];
+        foreach ( array_keys( $visible ) as $position => $item_index ) {
+            $string = $strings[ $position ];
+            $expected = $copy['settings'][ self::ITEMS ][ $item_index ]['value']['key']['value'];
+            if ( ! $string instanceof WPML_PB_String || $string->get_value() !== $expected
+                || in_array( $string->get_name(), $names, true ) ) {
+                return null;
+            }
+            $names[] = $string->get_name();
+            if ( '0' === $items[ $item_index ]['value']['key']['value'] ) {
+                $string = new WPML_PB_String( '0', $string->get_name(), $handler->get_title( self::LABEL ), $handler->get_editor_type( self::LABEL ) );
+            }
+            $result[] = $string;
+        }
+        return $result;
+    }
+
+    public function get( $node_id, $element, $strings ) {
+        if ( ! is_array( $strings ) || ! self::$fields ) {
+            return $strings;
+        }
+        try {
+            $handler = self::handler();
+            $items = self::items( $element );
+            if ( null === $items || self::native_support( $handler, $node_id, $element ) ) {
+                $result = self::call_native( function () use ( $handler, $node_id, $element, $strings ) {
+                    return $handler->get( $node_id, $element, $strings );
+                } );
+                return is_array( $result ) ? $result : $strings;
+            }
+            $extracted = self::extracted( $handler, $node_id, $element, $items );
+            if ( null === $extracted ) {
+                return $strings;
+            }
+            $result = $strings;
+            foreach ( $extracted as $string ) {
+                foreach ( $result as $existing ) {
+                    if ( $existing instanceof WPML_PB_String && $existing->get_name() === $string->get_name() ) {
+                        continue 2;
+                    }
+                }
+                $result[] = $string;
+            }
+            return $result;
+        } catch ( Throwable $error ) {
+            return $strings;
+        }
+    }
+
+    public function update( $node_id, $element, WPML_PB_String $string ) {
+        if ( ! self::$fields || ! is_string( $string->get_value() ) ) {
+            return [ null, null ];
+        }
+        try {
+            $handler = self::handler();
+            $items = self::items( $element );
+            if ( null === $items || self::native_support( $handler, $node_id, $element ) ) {
+                $result = self::call_native( function () use ( $handler, $node_id, $element, $string ) {
+                    return $handler->update( $node_id, $element, $string );
+                } );
+                return is_array( $result ) && array_keys( $result ) === [ 0, 1 ] ? $result : [ null, null ];
+            }
+            $extracted = self::extracted( $handler, $node_id, $element, $items );
+            $names = array_map( function ( $item ) { return $item->get_name(); }, $extracted ?? [] );
+            if ( ! in_array( $string->get_name(), $names, true ) ) {
+                return [ null, null ];
+            }
+            $copy = self::compatible( $element, $items, false );
+            $result = self::call_native( function () use ( $handler, $node_id, $copy, $string ) {
+                return $handler->update( $node_id, $copy, $string );
+            } );
+            if ( ! is_array( $result ) || array_keys( $result ) !== [ 0, 1 ]
+                || ! is_int( $result[0] ) || ! isset( $items[ $result[0] ] ) ) {
+                return [ null, null ];
+            }
+            list( $key, $item ) = $result;
+            $expected = $copy['settings'][ self::ITEMS ][ $key ];
+            $expected['value']['key']['value'] = $string->get_value();
+            if ( $item !== $expected ) {
+                return [ null, null ];
+            }
+            unset( $item['_id'] );
+            return [ $key, $item ];
+        } catch ( Throwable $error ) {
+            return [ null, null ];
+        }
+    }
+
+    public function get_items_field() {
+        return self::ITEMS;
+    }
+
+    public function get_field_path( $key ) {
+        return self::handler()->get_field_path( $key );
+    }
+}
+add_filter( 'wpml_elementor_widgets_to_translate', [ 'Netmilk_WPML_Select_Options', 'register' ], 100 );

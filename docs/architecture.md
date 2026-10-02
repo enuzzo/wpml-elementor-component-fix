@@ -1,6 +1,6 @@
 # How the temporary adapter works
 
-The entrypoint registers three independent filters on `wpml_elementor_widgets_to_translate` at priority 100. The component filter acts only when the `e-component` integration still names the installed native `WPML\PB\Elementor\V4\Component\Overrides` class and `WPML_PB_String` is available. Separate filters supplement the known form-name registration and attach a narrowly scoped native delegate for direct exposed heading/paragraph origins. Unrelated widgets and other integration handlers are preserved.
+The entrypoint registers four independent filters on `wpml_elementor_widgets_to_translate` at priority 100. The component filter acts only when the `e-component` integration still names the installed native `WPML\PB\Elementor\V4\Component\Overrides` class and `WPML_PB_String` is available. Separate filters supplement the known form-name registration, attach a narrowly scoped native delegate for direct exposed heading/paragraph origins, and route the known select-item registration through a native delegate. Unrelated widgets and other integration handlers are preserved.
 
 ## Native-first decision
 
@@ -32,6 +32,14 @@ When support is missing, only a recognized direct escaped-html origin is convert
 
 The component and form filters are unchanged from 1.0.2. The master adapter does not synchronize the property registry, map component IDs or materialize instance overrides. See [master-origin diagnosis and acceptance](master-origin-compatibility.md).
 
+## Select-option delegation (1.0.4 candidate)
+
+A guarded filter replaces only the recognized `e-form-select` item registration with a supplemental module composing the same native item handler. Original ordinary fields remain. Unknown/custom configurations are left unchanged. Runtime probes check distinct native identities, plain/HTML/zero labels and exact item import; successful support uses the original native handler with unmodified data.
+
+For the known missing support, the copy exposes the nested collection through its literal registered key and supplies temporary item IDs derived from unique, nonempty technical values. WPML generates the actual string names. A collision-free placeholder lets native extraction include a zero label, then its returned string is restored to `"0"`. Blank labels remain omitted. Neither label text nor array position determines the surrogate ID.
+
+Both extraction and import require unique native identities. Import accepts only the expected item with its visible label changed, strips the temporary item ID, and lets the native outer dispatcher write the original nested collection path. Technical values, wrappers and metadata stay intact. Copies, probes and error-handler restoration are request-local; no metadata synchronization is added. See [select-option contracts and acceptance](select-option-compatibility.md).
+
 ## Tests and limitations
 
 The public harness consists of original synthetic doubles. It tests the adapter's behavior against a minimal invented contract; it does not ship or load WPML code.
@@ -41,5 +49,7 @@ The public harness consists of original synthetic doubles. It tests the adapter'
 - Future-contract cases cover final classes/methods, typed returns/parameters, references, missing/static methods, changed parameter count and absent handlers.
 - Five additional form scenarios use an original synthetic field-path model to check scalar/wrapped names, identity, metadata, source immutability, repeat import, existing native registrations, unknown configurations and coexistence. They do not execute WPML's actual form importer.
 - Twelve master-origin scenarios use an original node-handler model to check native delegation, plain/HTML probes, unsafe updates, duplicate prevention, active fields/cache, unknown configurations/signatures and coexistence. A separate local diagnostic loads the installed native handler source with original environment stubs, outside the public repository. Neither test layer verifies WordPress jobs, registry synchronization or inherited rendering.
+
+- Twelve select scenarios cover broken/fixed native behavior, partial support, collisions, errors, unknown signatures/configurations, technical-value preservation, zero/blank labels, reordered items and source edits. A separate 20-check diagnostic exercises the installed native item handler and outer dispatcher with simulated dependencies.
 
 Run a real draft export/import/render cycle before production use and again after dependency updates. Record actual version combinations in a reproducible issue without sharing vendor code or client content.

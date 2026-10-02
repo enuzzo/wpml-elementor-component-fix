@@ -13,25 +13,33 @@
 
 Built by **Netmilk Studio**. Temporary by design, reusable across sites. Independent community project; not affiliated with or endorsed by WPML or Elementor.
 
-**Development status:** this branch contains an **unreleased 1.0.3 candidate**. The latest published release remains [**1.0.1**](https://github.com/enuzzo/wpml-elementor-component-fix/releases/tag/v1.0.1), which covers component overrides only. Follow the [changelog](CHANGELOG.md) for pending changes and [GitHub Actions](https://github.com/enuzzo/wpml-elementor-component-fix/actions/workflows/tests.yml) for results on a specific branch and commit. A green CI run does not certify a live CMS translation cycle.
+**Development status:** this branch contains an **unreleased 1.0.4 candidate**. The latest published release remains [**1.0.1**](https://github.com/enuzzo/wpml-elementor-component-fix/releases/tag/v1.0.1), which covers component overrides only. Follow the [changelog](CHANGELOG.md) for pending changes and [GitHub Actions](https://github.com/enuzzo/wpml-elementor-component-fix/actions/workflows/tests.yml) for results on a specific branch and commit. A green CI run does not certify a live CMS translation cycle.
 
-## What is new in the 1.0.3 candidate?
+## What is new in the 1.0.4 candidate?
+
+V4 select options can be registered correctly yet omitted by the native item handler: its collection lookup expects a flat key, and its identifier logic expects an item ID absent from typed options. Candidate 1.0.4 supplies an in-memory collection alias and stable surrogate item IDs derived from unique technical values, then delegates extraction, string naming and import to WPML. It exposes only visible labels for translation; technical values remain unchanged. Duplicate labels stay distinct after reordering, the visible label `"0"` is included, and blank labels remain omitted.
+
+Native extraction/import probes bypass normalization when the installed handler handles the format correctly. Unknown/custom registrations, ambiguous technical values and identity collisions are not adapted. The component, form-name and master-origin filters are unchanged from 1.0.3. This candidate adds no component-registry synchronization; it allows a fresh select/master/page cycle to establish rendering behavior before any metadata repair. See [select-option behavior and validation](docs/select-option-compatibility.md).
+
+## Changes retained from 1.0.3 and 1.0.2
 
 Exposing a heading or paragraph as a component property wraps its default text inside `overridable.value.origin_value`. The observed WPML handler already resolves that wrapper for `string` and `html-v3`, but misses `escaped-html`. Candidate 1.0.3 passes an in-memory `string` copy through the native node handler and restores `escaped-html` in its returned update. Original fields, identifiers and metadata remain native; no competing field paths or instance overrides are added. Plain-text and HTML extraction/import probes bypass adaptation when native support works. See [master-origin diagnosis and acceptance](docs/master-origin-compatibility.md).
 
 Some V4 forms store their name as a wrapped string, while WPML's configuration points to the containing value. The candidate adds the text path `form-name>value`, retaining the native identity `form-name` and the previous scalar path. Existing nested registrations, custom integrations and unknown configurations are left alone. The component override adapter is unchanged from 1.0.1.
 
-The suite now has 32 synthetic scenarios. Master-origin checks cover native delegation, runtime probes, active-field/cache behavior and conservative fallback. Form-name checks remain configuration-level guards. A separate local diagnostic exercised the installed native node-handler source with environment stubs; it does not certify a WordPress translation cycle. The earlier 1.0.2 package remains frozen, and its [form-name diagnosis](docs/form-name-compatibility.md) records historical test evidence separately.
+## Validation and before/after checks
+
+The suite now has 44 synthetic scenarios, including 12 select-option scenarios. Master-origin checks cover native delegation, runtime probes, active-field/cache behavior and conservative fallback. Form-name checks remain configuration-level guards. A separate local diagnostic exercised the installed native node-handler source with environment stubs; it does not certify a WordPress translation cycle. The earlier 1.0.2 package remains frozen, and its [form-name diagnosis](docs/form-name-compatibility.md) records historical test evidence separately.
 
 Before accepting the candidate on a site:
 
 1. Record the installed versions and active adapters, prepare backup/rollback, and capture existing translations and a fresh draft XLIFF export **before updating**.
 2. After updating, check those existing translated pages **before any new import** for unintended changes. Isolate the candidate from any local form-name addon during the controlled test so the addon cannot mask its behavior.
 3. Generate fresh WPML jobs, verify one name segment per form and stable identities, translate only targets, and import through WPML. Compare rendered texts, markup, links and form names **after import**, including without authentication.
-4. Run the separate [master-origin gates](docs/master-origin-compatibility.md#native-test-gates): fresh master exports, native import, raw element tree/registry comparison and inherited-page rendering.
-5. Change a source name and master text, then repeat the cycle. Verify source immutability, preserved wrapper metadata and absence of new duplicate fields; restore the previous configuration if a regression appears.
+4. Run the [select-option gates](docs/select-option-compatibility.md#site-acceptance) with duplicate labels, unique technical values, `"0"`, blank labels and reordering. Run the separate [master-origin gates](docs/master-origin-compatibility.md#native-test-gates): fresh master exports, native import, raw element tree/registry comparison and inherited-page rendering.
+5. Change a source form name, option label and master text, then repeat the cycle. Verify source immutability, preserved wrapper metadata and absence of new duplicate fields; restore the previous configuration if a regression appears.
 
-The candidate's live export/import/render cycle remains unverified. Two cycles were [reported for 1.0.1 plus a separate form-name addon](docs/form-name-compatibility.md#reported-combined-setup-test--2026-10-02), followed by rollback over unresolved inheritance. A later isolated 1.0.2 test reported a master export containing only the document title; no master import was attempted. Neither report validates 1.0.3. Test master and page jobs separately and compare actual raw bindings before/after native import; do not substitute successful activation or an accepted import for these checks.
+The candidate's live export/import/render cycle remains unverified. Two cycles were [reported for 1.0.1 plus a separate form-name addon](docs/form-name-compatibility.md#reported-combined-setup-test--2026-10-02), followed by rollback over unresolved inheritance. A later isolated 1.0.2 test reported a master export containing only the document title; no master import was attempted. Neither report validates later candidates. Test master and page jobs separately and compare actual raw bindings before/after native import; do not substitute successful activation or an accepted import for these checks.
 
 **1.0.3 integration progress — 2026-10-02:** with the frozen candidate alone, the site session reported successful fresh master export and native import in English, French and German. Read-only comparison of archived XLIFF/WXR evidence confirmed both origin texts translated with types, keys and element IDs preserved. The dedicated component property registry is missing from the translated masters, and the extended page export omitted select-option labels. That incomplete page export was not imported; the session reported rollback. Full migration acceptance remains open. See the [integration evidence](docs/master-origin-compatibility.md#validation-and-limits) and [metadata/select diagnosis](docs/integration-gaps.md).
 
@@ -52,6 +60,7 @@ This adapter targets **explicit instance text overrides stored as `escaped-html`
 | Unknown or incompatible native API | Original configuration retained |
 | V4 `e-form` nested name (1.0.2 candidate) | Additional `form-name>value` registration with native `field_id` `form-name`; existing nested/custom registrations retained |
 | Direct exposed heading/paragraph master text (1.0.3 candidate) | Native node-handler delegation with temporary type conversion; runtime probes; no registry writes or null/forwarded-binding resolution |
+| Typed select-option labels (1.0.4 candidate) | Native item-handler delegation; stable in-memory item IDs; technical values preserved; zero labels included |
 | Settings, database tables, frontend scripts, network calls, telemetry | None added |
 
 **WPML still owns the translation job and applies the translation.** The plugin does not independently write secondary-language Elementor pages or translate text itself.
@@ -87,7 +96,7 @@ Updates are manual through GitHub release ZIPs. The plugin does not install an u
 | WordPress | Declared minimum 6.5; WordPress runtime not included in the test harness |
 | Elementor | V4 `e-component` instances with explicit `escaped-html` overrides |
 | WPML | Existing `WPML\PB\Elementor\V4\Component\Overrides` handler using the supported untyped method contract |
-| Regression tests | 32 isolated scenarios with original synthetic doubles, including component behavior, form registration and master-origin delegation; 15 scenarios in published 1.0.1 |
+| Regression tests | 44 isolated scenarios with original synthetic doubles, including component behavior, form registration, master origins and select options; 15 scenarios in published 1.0.1 |
 | Live CMS certification | **Not yet completed for this public release** |
 
 The implementation was informed by a handler contract observed in WPML 4.9.7. Public tests contain original synthetic examples, **not** WPML vendor code or client exports. CI is a PHP/contract check, not a substitute for a real WordPress + Elementor + WPML export/import/render test.
@@ -110,7 +119,7 @@ Not in general. Candidate 1.0.3 adapts direct exposed heading/paragraph `escaped
 
 ### Will it fix every Elementor V4 button or custom widget?
 
-No. It targets `e-component` override values, nested `e-form` names and the 1.0.3 candidate's direct exposed heading/paragraph origins. Other master properties, custom controls, form fields/actions and styling remain outside scope. See [WPML's custom Elementor widget documentation](https://wpml.org/documentation/support/multilingual-tools/registering-custom-elementor-widgets-for-translation/) for a different integration problem.
+No. It targets `e-component` override values, nested `e-form` names, direct exposed heading/paragraph origins and the 1.0.4 candidate's typed select-option labels. Other master properties, custom controls, form fields/actions and styling remain outside scope. See [WPML's custom Elementor widget documentation](https://wpml.org/documentation/support/multilingual-tools/registering-custom-elementor-widgets-for-translation/) for a different integration problem.
 
 ### Can I reuse it across different sites and languages?
 
@@ -129,6 +138,6 @@ php tests/run.php
 python3 scripts/build.py
 ```
 
-The build uses an explicit payload allowlist and deterministic ZIP metadata. Current candidate output: `dist/netmilk-wpml-component-compat-1.0.3.zip` and `dist/SHA256SUMS`. Packages contain only the PHP entrypoint, WordPress readme and GPL license, inside one plugin folder. Building the candidate does not publish or replace the 1.0.1 release or frozen 1.0.2 package.
+The build uses an explicit payload allowlist and deterministic ZIP metadata. Current candidate output: `dist/netmilk-wpml-component-compat-1.0.4.zip` and `dist/SHA256SUMS`. Packages contain only the PHP entrypoint, WordPress readme and GPL license, inside one plugin folder. Building the candidate does not publish or replace the 1.0.1 release or frozen 1.0.2/1.0.3 packages.
 
 [Contributing](CONTRIBUTING.md) · [Changelog](CHANGELOG.md) · [GPL-2.0-or-later](LICENSE)

@@ -2,7 +2,7 @@
 
 ## Project purpose and scope
 
-Netmilk — WPML Elementor Component Fix is a standalone, public WordPress plugin: a temporary, reusable adapter for explicit Elementor V4 component text overrides stored as `escaped-html` that the native WPML handler omits. It also addresses the narrow `e-form` name registration mismatch (`form-name>value` with native identity `form-name`). The 1.0.3 candidate adapts the escaped-html type in memory for direct exposed `e-heading.title` and `e-paragraph.paragraph` master origins. It does not translate independently. General inherited-default resolution, null/forwarded bindings, other master properties and other form fields/actions remain unsupported. See [architecture](docs/architecture.md) for the implementation.
+Netmilk — WPML Elementor Component Fix is a standalone, public WordPress plugin: a temporary, reusable adapter for explicit Elementor V4 component text overrides stored as `escaped-html` that the native WPML handler omits. It also addresses the narrow `e-form` name registration mismatch (`form-name>value` with native identity `form-name`). Version 1.0.3 adapts the escaped-html type in memory for direct exposed `e-heading.title` and `e-paragraph.paragraph` master origins. The 1.0.4 candidate also delegates typed select-option labels through WPML’s native item handler. It does not translate independently. General inherited-default resolution, null/forwarded bindings, other master properties and other form fields/actions remain unsupported. See [architecture](docs/architecture.md) for the implementation.
 
 ## Repository map
 
@@ -21,6 +21,8 @@ Preserve the native plain-text and HTML extraction/import probes. Retain the off
 For form names, preserve the scalar registration and its metadata and use native `field_id` for the additional nested path. Existing nested registrations, custom integrations and unknown/ambiguous configuration contracts must remain unchanged. Do not claim a registration check is a native runtime round-trip probe.
 
 For direct master text origins, compose the native node handler with its original heading/paragraph fields. Add no competing text paths. Run native plain-text/HTML probes from the integration callback in the actual element context, never on a fabricated widget during registration (native active-settings caches must remain valid). Preserve native identities, metadata and the stored escaped-html type. Existing origin paths/custom handlers take precedence. Do not fabricate overrides, resolve null/forwarded origins, write the property registry or remap components. Native falsey-string omissions remain unchanged; registry consistency and inherited rendering require separate live acceptance.
+
+For select options, require the known native item registration and unique nonempty technical values. Keep the collection alias, surrogate item IDs and zero-label placeholder in memory only. Delegate string naming and import to WPML; never translate technical option values or use labels/positions as identity. Reject collisions and unexpected mutations. Leave other configurations unchanged and bypass normalization when native probes pass. Frozen candidates must not be overwritten.
 
 ## Translation and site boundaries
 
