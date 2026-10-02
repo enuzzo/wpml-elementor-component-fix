@@ -1,6 +1,16 @@
 # Inherited component defaults: separate investigation
 
-Status: diagnosis and conditional proposals only, 2026-10-02. No inherited-default fix is included in the 1.0.2 candidate. No site state, client fixture or vendor implementation is included here.
+Status: diagnosis and conditional proposals only, 2026-10-02. No inherited-default fix is included in the 1.0.2 candidate. No client exports, identifying site data, private fixtures or vendor implementation are included here.
+
+## Reported integration observations — unresolved
+
+A separate integration session reported two completed translation cycles using **1.0.1 plus a separate form-name addon**, not the 1.0.2 candidate. The observations below are a sanitized report, not independently reproduced by this repository session.
+
+- A deserialized MCP read exposed a title string in the source master and one translated master, but `null` in two other translated masters. This read did not expose the raw property bindings; `null` in that view cannot establish that the underlying origin value or binding is absent.
+- Inherited output initially appeared empty in two target languages, including after restoring the previous adapter. After the second translation cycle and preview checks, all three target languages rendered the source default.
+- The changed output does not prove a repair, correct inherited translation, or a specific root cause. Master selection, cache state and language/preview context remain hypotheses. The source default appearing in a translated page is not evidence that its master text was translated successfully.
+
+Do not classify inherited defaults as fixed or infer a universal patch from this report. Preserve the distinction between deserialized observations and raw stored bindings, and between signed preview requests without cookies and ordinary public requests. Obtain read-only raw master/binding evidence and the effective document selected in each context before proposing an implementation. The 1.0.2 candidate had not been installed in the reporting session at the time of this update.
 
 ## What the public model establishes
 

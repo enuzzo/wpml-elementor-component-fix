@@ -42,7 +42,13 @@ A separately authorized integration test still needs to:
 5. Change a source name and repeat with a fresh job; check that fields do not duplicate and translations remain associated with the right form.
 6. Compare with the adapter deactivated to determine whether native support now suffices. Inspect any local addon separately before retiring it.
 
-The repository session does not install on sites, submit forms or claim a completed live cycle. The published 1.0.1 tag and artifacts stay immutable. Version 1.0.2 is a local candidate until separately approved for publication.
+The repository session does not install on sites, submit forms or claim a completed live cycle. The published 1.0.1 tag and artifacts stay immutable. Version 1.0.2 is an unreleased candidate on the development branch and draft pull request.
+
+## Reported combined-setup test — 2026-10-02
+
+A separate integration session reported two completed cycles using **1.0.1 plus a separate form-name addon** across three target languages. The second cycle changed two explicit overrides and the source form name, generated fresh XLIFF 1.2 jobs with stable identities, validated target-only translations and completed native WPML import. Desktop/mobile rendering and signed preview HTML requested without cookies were reported correct for the tested overrides, markup/entities, links and form name. Target data reportedly remained unchanged between the first cycle and the second import; no direct target writes were reported.
+
+This is reported evidence for that combined setup, not independent verification here, a test of 1.0.1 alone, or acceptance of 1.0.2. A signed preview without cookies is not the same as an ordinary public URL. The candidate had not been installed by that session at the time of the report. Its isolated before/after acceptance remains pending. Inherited defaults remain a [separate unresolved investigation](inherited-defaults-investigation.md).
 
 ## Local verification — 2026-10-02
 

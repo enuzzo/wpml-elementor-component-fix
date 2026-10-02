@@ -28,7 +28,7 @@ Before accepting the candidate on a site:
 3. Generate fresh WPML jobs, verify one name segment per form and stable identities, translate only targets, and import through WPML. Compare rendered texts, markup, links and form names **after import**, including without authentication.
 4. Change a source name and repeat the cycle. Verify source immutability, preserved wrapper metadata and absence of duplicate fields; restore the previous configuration if a regression appears.
 
-The candidate's live export/import/render cycle remains unverified. Do not substitute successful activation or an accepted import for these checks.
+The candidate's live export/import/render cycle remains unverified. Two cycles have been [reported for 1.0.1 plus a separate form-name addon](docs/form-name-compatibility.md#reported-combined-setup-test--2026-10-02); those results do not validate 1.0.2 alone. Do not substitute successful activation or an accepted import for these checks.
 
 ## The symptom
 
