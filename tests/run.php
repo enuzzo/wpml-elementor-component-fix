@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 $cases = [
     'scenario.php' => ['broken', 'fixed', 'throws', 'import_broken', 'text_only'],
-    'unknown-contract.php' => ['final', 'typed-return', 'typed-param', 'by-reference', 'final-method', 'missing-method', 'static-method', 'extra-param', 'absent'],
+    'unknown-contract.php' => ['final', 'typed-return', 'typed-param', 'nullable-param', 'by-reference', 'final-method', 'missing-method', 'static-method', 'extra-param', 'absent'],
 ];
 $count = 0;
 foreach ($cases as $file => $modes) {

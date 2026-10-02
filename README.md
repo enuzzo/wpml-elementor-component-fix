@@ -63,7 +63,7 @@ Updates are manual through GitHub release ZIPs. The plugin does not install an u
 | WordPress | Declared minimum 6.5; WordPress runtime not included in the test harness |
 | Elementor | V4 `e-component` instances with explicit `escaped-html` overrides |
 | WPML | Existing `WPML\PB\Elementor\V4\Component\Overrides` handler using the supported untyped method contract |
-| Regression tests | 14 isolated scenarios with original synthetic doubles, covering extraction, import, identities, links, source immutability and conservative fallback |
+| Regression tests | 15 isolated scenarios with original synthetic doubles, covering extraction, import, identities, links, source immutability and conservative fallback |
 | Live CMS certification | **Not yet completed for this public release** |
 
 The implementation was informed by a handler contract observed in WPML 4.9.7. Public tests contain original synthetic examples, **not** WPML vendor code or client exports. CI is a PHP/contract check, not a substitute for a real WordPress + Elementor + WPML export/import/render test.

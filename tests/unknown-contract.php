@@ -6,6 +6,7 @@ $contracts = [
     'final' => 'final class Overrides { public function get($a,$b,$c) { return []; } public function update($a,$b,\\WPML_PB_String $c) { return [null,null]; } }',
     'typed-return' => 'class Overrides { public function get($a,$b,$c): array { return []; } public function update($a,$b,\\WPML_PB_String $c): array { return [null,null]; } }',
     'typed-param' => 'class Overrides { public function get($a,array $b,$c) { return []; } public function update($a,$b,\\WPML_PB_String $c) { return [null,null]; } }',
+    'nullable-param' => 'class Overrides { public function get($a,$b,$c) { return []; } public function update($a,$b,?\\WPML_PB_String $c) { return [null,null]; } }',
     'by-reference' => 'class Overrides { public function get($a,&$b,$c) { return []; } public function update($a,$b,\\WPML_PB_String $c) { return [null,null]; } }',
     'final-method' => 'class Overrides { final public function get($a,$b,$c) { return []; } public function update($a,$b,\\WPML_PB_String $c) { return [null,null]; } }',
     'missing-method' => 'class Overrides { public function get($a,$b,$c) { return []; } }',

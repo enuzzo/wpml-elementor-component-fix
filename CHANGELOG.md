@@ -8,6 +8,7 @@ First public release. Extracted from an internal compatibility adapter into a re
 - Preserve native identifiers, link handling and the original Elementor value type.
 - Check native plain-text and HTML extraction/import before applying the adapter.
 - Leave unknown or incompatible native contracts unchanged, including a missing import method.
+- Avoid the deprecated PHP 7.4 reflection type string conversion; reject nullable and unknown signatures.
 - Add original synthetic regression fixtures, PHP CI, reproducible packaging, GPL licensing, and English/Italian documentation.
 
 The internal 1.0.0 package was not a public release. These are contract-level tests; this public release has not yet completed a live CMS export/import/render verification.

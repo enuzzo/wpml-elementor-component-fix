@@ -105,8 +105,11 @@ add_filter( 'wpml_elementor_widgets_to_translate', function ( $widgets ) {
         }
         foreach ( $method->getParameters() as $index => $parameter ) {
             $expected_type = 'update' === $method_name && 2 === $index ? 'WPML_PB_String' : '';
-            $type = $parameter->hasType() ? (string) $parameter->getType() : '';
-            if ( $type !== $expected_type || $parameter->isPassedByReference() || $parameter->isVariadic() ) {
+            $type = $parameter->getType();
+            $type_matches = '' === $expected_type
+                ? null === $type
+                : $type instanceof ReflectionNamedType && ! $type->allowsNull() && $type->getName() === $expected_type;
+            if ( ! $type_matches || $parameter->isPassedByReference() || $parameter->isVariadic() ) {
                 return $widgets;
             }
         }
