@@ -33,7 +33,7 @@ Some V4 forms store their name as a wrapped string, while WPML's configuration p
 
 ## Validation and before/after checks
 
-The suite now has 44 synthetic scenarios, including 12 select-option scenarios. Master-origin checks cover native delegation, runtime probes, active-field/cache behavior and conservative fallback. Form-name checks remain configuration-level guards. A separate local diagnostic exercised the installed native node-handler source with environment stubs; it does not certify a WordPress translation cycle. The earlier 1.0.2 package remains frozen, and its [form-name diagnosis](docs/form-name-compatibility.md) records historical test evidence separately.
+The development suite now has 45 synthetic scenarios (44 at the 1.0.4 release), including 12 select-option scenarios. Master-origin checks cover native delegation, runtime probes, active-field/cache behavior and conservative fallback. Form-name checks remain configuration-level guards. A separate local diagnostic exercised the installed native node-handler source with environment stubs; it does not certify a WordPress translation cycle. The earlier 1.0.2 package remains frozen, and its [form-name diagnosis](docs/form-name-compatibility.md) records historical test evidence separately.
 
 Before accepting an update on another site:
 
@@ -100,10 +100,14 @@ Updates are manual through GitHub release ZIPs. The plugin does not install an u
 | WordPress | Declared minimum 6.5; WordPress runtime not included in the test harness |
 | Elementor | V4 `e-component` instances with explicit `escaped-html` overrides |
 | WPML | Existing `WPML\PB\Elementor\V4\Component\Overrides` handler using the supported untyped method contract |
-| Regression tests | 44 isolated scenarios with original synthetic doubles, including component behavior, form registration, master origins and select options; 15 scenarios in published 1.0.1 |
+| Regression tests | 45 development scenarios (44 at the 1.0.4 release) with original synthetic doubles, including component behavior, form registration, master origins and select options; 15 scenarios in published 1.0.1 |
 | Live integration acceptance | Two cycles on one recorded stack; [scope, versions and limits](docs/releases/1.0.4.md) |
 
 The implementation was informed by a handler contract observed in WPML 4.9.7. Public tests contain original synthetic examples, **not** WPML vendor code or client exports. CI is a PHP/contract check, not a substitute for a real WordPress + Elementor + WPML export/import/render test.
+
+## Older translations still show missing inherited text
+
+Activation does not migrate old translated masters. A later read-only audit found some legacy `html-v3` origins where the source already used `escaped-html`; their numeric text was present in raw data but missing in resolved/rendered output. This case was not covered by the successful fresh-master demo cycles. Follow the [legacy master recovery guide](docs/legacy-master-recovery.md): authorize a fresh **source master** job through WPML, verify its exported units, import reviewed targets natively, then inspect saved types and inherited rendering. Recovery is not yet verified, and page-only retranslation or direct target edits must not substitute for that gate.
 
 ## Remove it when native support works
 

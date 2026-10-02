@@ -25,7 +25,7 @@ Technical values, types, item metadata and the source are preserved. Temporary a
 
 ## Validation
 
-The public suite contains **44 isolated scenarios**, including 12 select scenarios using original synthetic doubles. They cover missing/working/partial native support, broken imports, errors, unknown APIs/configurations, colliding names, duplicate labels, zero/blank values, metadata preservation, repeat import, source edits, reordering and coexistence.
+The public development suite contains **45 isolated scenarios** (44 at the 1.0.4 release), including 12 select scenarios using original synthetic doubles. They cover missing/working/partial native support, broken imports, errors, unknown APIs/configurations, colliding names, duplicate labels, zero/blank values, metadata preservation, repeat import, source edits, reordering and coexistence.
 
 A separate private local diagnostic passes **20 checks** on the installed native item classes and outer node dispatcher with environment stubs. It verifies four visible labels from five rows, distinct native identities, exact zero handling, correct nested import, stable reordering/source-edit cycles, rejection of duplicate technical values, and unchanged source/technical metadata. The existing **28-check master diagnostic** also passes. No vendor code or client fixtures are distributed in this repository. These local checks do not establish a WordPress job/render cycle.
 
