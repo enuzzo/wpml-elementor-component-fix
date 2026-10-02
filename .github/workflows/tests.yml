@@ -1,0 +1,25 @@
+name: PHP compatibility
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['7.4', '8.1', '8.3', '8.5']
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: shivammathur/setup-php@b604ade2a87db23f8871b7182e69ec5e75effb45 # v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+      - name: Syntax check
+        run: find plugin tests -name '*.php' -print0 | xargs -0 -n1 php -l
+      - name: Synthetic contract regression tests
+        run: php tests/run.php
+      - name: Build and verify installable ZIP
+        run: python3 scripts/build.py

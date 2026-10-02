@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 420" role="img" aria-labelledby="title desc">
+<title id="title">Netmilk — WPML Elementor Component Fix</title>
+<desc id="desc">A temporary adapter brings missing component override text back into the native WPML translation workflow.</desc>
+<rect width="1200" height="420" rx="24" fill="#F5F1E9"/>
+<path d="M34 72H1166" stroke="#D6CEC1"/>
+<text x="44" y="47" font-family="sans-serif" font-size="18" letter-spacing="3" fill="#222820">NETMILK STUDIO / OPEN SOURCE</text>
+<rect x="917" y="23" width="238" height="31" rx="15.5" fill="#243E32"/>
+<text x="1036" y="44" text-anchor="middle" font-family="sans-serif" font-size="13" letter-spacing="1" fill="#F5F1E9">TEMPORARY BY DESIGN</text>
+<text x="44" y="139" font-family="sans-serif" font-size="48" font-weight="700" fill="#222820">Lost in translation?</text>
+<text x="46" y="176" font-family="sans-serif" font-size="20" fill="#5E665A">Elementor V4 components. Native WPML workflow.</text>
+<rect x="44" y="222" width="320" height="118" rx="14" fill="#FFFFFF"/>
+<text x="65" y="251" font-family="sans-serif" font-size="12" letter-spacing="2" fill="#5E665A">SOURCE OVERRIDE</text>
+<rect x="66" y="272" width="239" height="10" rx="5" fill="#D7B677"/>
+<rect x="66" y="293" width="168" height="8" rx="4" fill="#E8E0D2"/>
+<text x="65" y="324" font-family="monospace" font-size="13" fill="#5E665A">escaped-html</text>
+<path d="M383 282H421M412 275L422 282L412 289" stroke="#243E32" stroke-width="2" fill="none"/>
+<rect x="442" y="222" width="315" height="118" rx="14" fill="#243E32"/>
+<text x="464" y="252" font-family="sans-serif" font-size="12" letter-spacing="2" fill="#CAD7CA">SMALL ADAPTER</text>
+<text x="464" y="289" font-family="sans-serif" font-size="23" font-weight="700" fill="#FFFFFF">Keep the native flow.</text>
+<text x="464" y="319" font-family="sans-serif" font-size="14" fill="#CAD7CA">Defer when native support works.</text>
+<path d="M777 282H815M806 275L816 282L806 289" stroke="#243E32" stroke-width="2" fill="none"/>
+<rect x="836" y="222" width="320" height="118" rx="14" fill="#FFFFFF"/>
+<text x="858" y="251" font-family="sans-serif" font-size="12" letter-spacing="2" fill="#5E665A">WPML EXPORT / IMPORT</text>
+<rect x="858" y="272" width="237" height="10" rx="5" fill="#243E32"/>
+<rect x="858" y="293" width="172" height="8" rx="4" fill="#CAD7CA"/>
+<text x="858" y="324" font-family="monospace" font-size="13" fill="#5E665A">Text back in the job.</text>
+<text x="46" y="387" font-family="sans-serif" font-size="15" fill="#5E665A">Explicit overrides • Native identifiers • Clean removal</text>
+</svg>
