@@ -2,7 +2,10 @@
 
 ## [Unreleased]
 
-No changes yet.
+### Added
+
+- Add a synthetic legacy-master boundary scenario (45 development scenarios; 44 at the 1.0.4 release). Verify numeric modern-source extraction/import and source immutability while preserving native handling of old `html-v3` origins; no automatic target migration is implied.
+- Document a read-only finding of mismatched origin types in older translated masters and a gated [fresh master-job recovery procedure](docs/legacy-master-recovery.md). Recovery of those existing targets remains unverified; fresh demo acceptance does not certify it. Runtime, version and published 1.0.4 ZIP are unchanged.
 
 ## [1.0.4] — 2026-10-02
 

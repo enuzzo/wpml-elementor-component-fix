@@ -47,6 +47,41 @@ $GLOBALS['master_base_config'] = $original;
 $mapped = $filter($original);
 if (in_array($mode, ['typed', 'absent'], true)) {
     check($mapped === $original, 'Unknown/absent native contract is unchanged');
+} elseif ($mode === 'legacy-source') {
+    // Invented numeric origin and stale target: this does not model WPML's job builder.
+    $source = master_node('e-heading', 'title', '7');
+    $legacy = $source;
+    $legacy['settings']['title']['value']['origin_value'] = [
+        '$$type' => 'html-v3',
+        'value' => ['content' => ['$$type' => 'string', 'value' => '7'], 'children' => []],
+    ];
+    $source_before = $source;
+    $legacy_before = $legacy;
+    $native = new WPML_Elementor_Translatable_Nodes();
+    $module = new Netmilk_WPML_Master_Origins();
+    $id = $source['id'];
+    $name = $native->get_string_name($id, $original['e-heading']['fields'][1], $source);
+    $strings = $native->get($id, $source);
+    $numeric = array_values(array_filter($strings, function ($s) use ($name) { return $s->get_name() === $name; }));
+    check(count($numeric) === 1 && $numeric[0]->get_value() === '7', 'Nonzero numeric source origin is extracted once');
+    check($native->get_string_name($id, $original['e-heading']['fields'][1], $legacy) === $name, 'Native identity does not depend on origin storage type');
+    $same = new WPML_PB_String('7', $name, 'Synthetic number', 'VISUAL');
+    $incoming = [new WPML_PB_String('Keep', 'unrelated', '', 'LINE')];
+    check($module->get($id, $legacy, $incoming) === $incoming, 'Adapter leaves legacy extraction to native handling');
+    check($module->update($id, $legacy, $same) === [null, null], 'Adapter does not migrate a supplied legacy target');
+    check($native->update($id, $legacy, $same) === $legacy_before, 'Native text import on a legacy node does not convert its type');
+    $modern = $native->update($id, $source, $same);
+    check($modern === $source_before, 'Same numeric target on a modern source retains the full escaped-html structure');
+    check($legacy === $legacy_before, 'Processing modern source does not independently repair an old target');
+    $translated = new WPML_PB_String('Translated numeric caption', $name, 'Synthetic number', 'VISUAL');
+    $expected = $source;
+    $expected['settings']['title']['value']['origin_value']['value'] = $translated->get_value();
+    check($native->update($id, $source, $translated) === $expected, 'Source-based native import preserves wrapper, type, keys, links and metadata');
+    $edited = master_node('e-heading', 'title', '8');
+    $fresh = array_values(array_filter($native->get($id, $edited), function ($s) use ($name) { return $s->get_name() === $name; }));
+    check(count($fresh) === 1 && $fresh[0]->get_value() === '8', 'Fresh numeric source extraction keeps native identity after an edit');
+    check($native->update($id, $edited, new WPML_PB_String('8', $name, '', 'VISUAL')) === $edited, 'Second source-based import preserves the edited numeric origin');
+    check($source === $source_before && $legacy === $legacy_before, 'Both original snapshots remain immutable');
 } elseif ($mode === 'unknown') {
     $variants = [];
     $variants[] = ['integration-class' => ['Custom_Master_Handler']];

@@ -33,7 +33,7 @@ python3 scripts/build.py
 git diff --check
 ```
 
-Version 1.0.4 runs 44 isolated scenarios (32 in frozen 1.0.3, 20 in frozen 1.0.2, 15 in published 1.0.1). Failures stop the runner. These are synthetic contract tests, including extraction/import behavior, source immutability, identities, links, native component support and conservative handling of unknown contracts. The form scenarios model field registration; the master scenarios model native delegation, runtime probes and cache/active-field behavior. Select scenarios cover collection adaptation, stable identities, duplicate labels, zero/blank values, import safety and native bypass. None is a live CMS test.
+The development suite runs 45 isolated scenarios (44 at the 1.0.4 release) (32 in frozen 1.0.3, 20 in frozen 1.0.2, 15 in published 1.0.1). Failures stop the runner. These are synthetic contract tests, including extraction/import behavior, source immutability, identities, links, native component support and conservative handling of unknown contracts. The form scenarios model field registration; the master scenarios model native delegation, runtime probes and cache/active-field behavior. Select scenarios cover collection adaptation, stable identities, duplicate labels, zero/blank values, import safety and native bypass. The additional [legacy-source scenario](legacy-master-recovery.md) checks numeric modern origins and explicitly leaves old target migration to a separately verified native job. None is a live CMS test.
 
 Inspect [.github/workflows/tests.yml](../.github/workflows/tests.yml) when changing prerequisites or checks. The current CI runs syntax checks, the synthetic suite and packaging on PHP 7.4, 8.1, 8.3 and 8.5. If GitHub CLI is available, inspect results with:
 

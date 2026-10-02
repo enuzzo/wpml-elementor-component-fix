@@ -31,4 +31,6 @@ Il registro delle proprietà dei master tradotti resta assente nella fixture, ma
 
 Lo ZIP ufficiale è identico al candidato collaudato, checksum incluso. Il readme interno conserva la vecchia dicitura “candidate” per non alterare quei byte: note di release e documentazione GitHub riportano l’accettazione definitiva. Prima di sostituire un addon locale, leggere le istruzioni del sito e verificare le traduzioni prima dell’aggiornamento, dopo l’attivazione e dopo ogni import nativo. Su un altro stack occorre ripetere la prova.
 
+Un audit successivo ha rilevato testi numerici ereditati mancanti in alcuni master tradotti in passato, con origine `html-v3` mentre la sorgente usa già `escaped-html`. La 1.0.4 non migra quei dati all’attivazione. Il [recupero tramite nuovo lavoro WPML del master sorgente](legacy-master-recovery.md) è documentato, ma non ancora verificato sui target legacy: servono autorizzazione del sito, controllo dell’export, import nativo e confronto di dati salvati/rendering. La suite di sviluppo aggiunge questo limite come 45° scenario sintetico; runtime e ZIP 1.0.4 restano invariati.
+
 [README completo e FAQ](../README.md) · [Funzionamento tecnico](architecture.md) · [Segnala un problema](https://github.com/enuzzo/wpml-elementor-component-fix/issues/new/choose)
