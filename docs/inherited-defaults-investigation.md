@@ -2,6 +2,8 @@
 
 Status: diagnosis and conditional proposals only, 2026-10-02. No inherited-default fix is included in the 1.0.2 candidate. No client exports, identifying site data, private fixtures or vendor implementation are included here.
 
+**Latest development:** isolated master exports under 1.0.2 and the earlier adapter both omitted exposed heading/paragraph origins. A narrowly scoped [1.0.3 master-origin type adapter](master-origin-compatibility.md) delegates direct escaped-html origins to the native node handler. This does not establish a fix for registry synchronization, null/forwarded bindings or inherited rendering. Earlier observations below retain their original test context.
+
 ## Reported integration observations — unresolved
 
 A separate integration session reported two completed translation cycles using **1.0.1 plus a separate form-name addon**, not the 1.0.2 candidate. The observations below are a sanitized report, not independently reproduced by this repository session.

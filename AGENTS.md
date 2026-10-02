@@ -2,7 +2,7 @@
 
 ## Project purpose and scope
 
-Netmilk — WPML Elementor Component Fix is a standalone, public WordPress plugin: a temporary, reusable adapter for explicit Elementor V4 component text overrides stored as `escaped-html` that the native WPML handler omits. The 1.0.2 candidate also addresses the narrow `e-form` name registration mismatch (`form-name>value` with native identity `form-name`). It does not translate independently. Inherited component defaults without an explicit instance override and other form fields/actions are outside its scope. See [architecture](docs/architecture.md) for the implementation.
+Netmilk — WPML Elementor Component Fix is a standalone, public WordPress plugin: a temporary, reusable adapter for explicit Elementor V4 component text overrides stored as `escaped-html` that the native WPML handler omits. It also addresses the narrow `e-form` name registration mismatch (`form-name>value` with native identity `form-name`). The 1.0.3 candidate adapts the escaped-html type in memory for direct exposed `e-heading.title` and `e-paragraph.paragraph` master origins. It does not translate independently. General inherited-default resolution, null/forwarded bindings, other master properties and other form fields/actions remain unsupported. See [architecture](docs/architecture.md) for the implementation.
 
 ## Repository map
 
@@ -19,6 +19,8 @@ Delegate extraction, field identifiers, link handling and import to WPML. Adapt 
 Preserve the native plain-text and HTML extraction/import probes. Retain the official handler when they pass; leave unknown or incompatible contracts and other handlers unchanged. Keep production code compatible with the declared PHP minimum (currently 7.4); do not infer compatibility from a newer local interpreter alone.
 
 For form names, preserve the scalar registration and its metadata and use native `field_id` for the additional nested path. Existing nested registrations, custom integrations and unknown/ambiguous configuration contracts must remain unchanged. Do not claim a registration check is a native runtime round-trip probe.
+
+For direct master text origins, compose the native node handler with its original heading/paragraph fields. Add no competing text paths. Run native plain-text/HTML probes from the integration callback in the actual element context, never on a fabricated widget during registration (native active-settings caches must remain valid). Preserve native identities, metadata and the stored escaped-html type. Existing origin paths/custom handlers take precedence. Do not fabricate overrides, resolve null/forwarded origins, write the property registry or remap components. Native falsey-string omissions remain unchanged; registry consistency and inherited rendering require separate live acceptance.
 
 ## Translation and site boundaries
 

@@ -1,6 +1,6 @@
 # Isolated 1.0.2 demo: artifact and read-only diagnosis
 
-Status, 2026-10-02: a dedicated demo test of 1.0.2 without the separate form-name addon is planned. No candidate live result is established. Earlier combined-setup results and rollback are historical observations, not acceptance of this candidate.
+This protocol records the frozen 1.0.2 demo setup. The subsequent isolated test reported a master export containing only its document title, reproduced with fresh master/jobs under the earlier adapter. No master import was performed. See the [1.0.3 master-origin investigation](master-origin-compatibility.md) for the follow-up candidate; no completed candidate acceptance is claimed. Earlier combined-setup results and rollback remain separate historical observations.
 
 ## Frozen candidate
 

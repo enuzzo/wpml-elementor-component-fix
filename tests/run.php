@@ -4,6 +4,7 @@ $cases = [
     'scenario.php' => ['broken', 'fixed', 'throws', 'import_broken', 'text_only'],
     'unknown-contract.php' => ['final', 'typed-return', 'typed-param', 'nullable-param', 'by-reference', 'final-method', 'missing-method', 'static-method', 'extra-param', 'absent'],
     'form-name.php' => ['registration', 'roundtrip', 'native', 'unknown', 'combined'],
+    'master-origins.php' => ['registration', 'roundtrip', 'fixed', 'text_only', 'import_broken', 'throws', 'unsafe', 'unknown', 'combined', 'absent', 'typed', 'cache'],
 ];
 $count = 0;
 foreach ($cases as $file => $modes) {

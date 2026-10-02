@@ -33,7 +33,7 @@ python3 scripts/build.py
 git diff --check
 ```
 
-The 1.0.2 candidate runs 20 isolated scenarios (15 in published 1.0.1). Failures stop the runner. These are synthetic contract tests, including extraction/import behavior, source immutability, identities, links, native component support and conservative handling of unknown contracts. The additional form scenarios model field registration semantics; they are not a live CMS test.
+The 1.0.3 candidate runs 32 isolated scenarios (20 in frozen 1.0.2, 15 in published 1.0.1). Failures stop the runner. These are synthetic contract tests, including extraction/import behavior, source immutability, identities, links, native component support and conservative handling of unknown contracts. The form scenarios model field registration; the master scenarios model native delegation, runtime probes and cache/active-field behavior. None is a live CMS test.
 
 Inspect [.github/workflows/tests.yml](../.github/workflows/tests.yml) when changing prerequisites or checks. The current CI runs syntax checks, the synthetic suite and packaging on PHP 7.4, 8.1, 8.3 and 8.5. If GitHub CLI is available, inspect results with:
 
@@ -48,12 +48,12 @@ Check the run's commit and individual jobs before claiming CI success for a chan
 
 The builder reads the version from the PHP header, checks the WordPress stable tag, builds from an explicit allowlist, and verifies archive integrity and byte-for-byte payload equality. It uses fixed ZIP timestamps and permissions. `dist/` is generated and excluded from Git.
 
-For the current 1.0.2 candidate, inspect the archive and verify its separate checksum:
+For the current 1.0.3 candidate, inspect the archive and verify its separate checksum:
 
 ```sh
-python3 -m zipfile -l dist/netmilk-wpml-component-compat-1.0.2.zip
+python3 -m zipfile -l dist/netmilk-wpml-component-compat-1.0.3.zip
 (cd dist && shasum -a 256 -c SHA256SUMS)
-git check-ignore dist/netmilk-wpml-component-compat-1.0.2.zip dist/SHA256SUMS
+git check-ignore dist/netmilk-wpml-component-compat-1.0.3.zip dist/SHA256SUMS
 ```
 
 The exact ZIP payload is:
@@ -71,11 +71,12 @@ The root license is copied into the package by the builder. No tests, scripts, r
 | Evidence | What it establishes |
 | --- | --- |
 | PHP lint and synthetic contract suite | Behavior under the original public doubles on the tested interpreter |
+| Isolated native-source diagnostic with environment stubs | Behavior of that installed handler source under simulated dependencies; no CMS, registry, job or renderer certification |
 | Build, payload and checksum checks | Integrity and expected structure of the generated installable package |
 | WordPress installation and activation | Whether that package loads on one recorded stack |
 | Fresh WPML export, native import and rendered-page inspection | End-to-end behavior for the tested fields on that recorded stack |
 
-For a separately authorized site test, read that site's instructions and backup requirements first. Follow [Install and verify](../README.md#install-and-verify), use fresh jobs and record exact PHP, WordPress, WPML, String Translation, Elementor and Elementor Pro versions. Check multiple explicit overrides, markup, field identities, links and source immutability. Inherited defaults remain outside scope. Keep client evidence outside this public repository; share only a sanitized summary and invented reproduction here.
+For a separately authorized site test, read that site's instructions and backup requirements first. Follow [Install and verify](../README.md#install-and-verify), use fresh jobs and record exact PHP, WordPress, WPML, String Translation, Elementor and Elementor Pro versions. Check multiple explicit overrides, markup, field identities, links and source immutability. Follow the [master-origin gates](master-origin-compatibility.md#native-test-gates) separately; general inherited resolution remains unsupported. Keep client evidence outside this public repository; share only a sanitized summary and invented reproduction here.
 
 For removal after an official update, follow [Remove it when native support works](../README.md#remove-it-when-native-support-works). The in-memory probe cannot substitute for testing the actual fields with the adapter deactivated.
 
@@ -92,5 +93,7 @@ This is a historical baseline, not proof of future checkout or dependency state:
 ## End-of-session handoff
 
 The subsequent 1.0.2 candidate adds the narrowly scoped [form-name registration correction](form-name-compatibility.md). Keep its status separate from the historical 1.0.1 baseline above: check its own CI result and require real-stack acceptance before release publication. Do not overwrite the published 1.0.1 tag or release assets.
+
+The 1.0.3 work extends the candidate to direct exposed heading/paragraph origins. Keep the [frozen 1.0.2 artifact](live-demo-protocol.md#frozen-candidate) unchanged, and require the native test gates before accepting the new behavior. Do not transfer a prior candidate's checksum or CI result to a later build.
 
 Report the local path, origin, branch and full HEAD commit, then list changed files and whether they are uncommitted, committed, pushed or published. Include commands run, runtime versions, outcomes, artifact path/checksum and any remaining evidence gaps. Record pending documentation work under Unreleased without changing the plugin version. Do not report installation or a release unless it was separately requested and actually completed.

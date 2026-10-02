@@ -1,5 +1,7 @@
 # V4 form-name compatibility — 1.0.2 candidate
 
+The 1.0.2 artifact and the observations below remain historical references. The current [1.0.3 work](master-origin-compatibility.md) keeps this form filter unchanged and investigates a separate master-origin omission; no completed live candidate acceptance is claimed.
+
 ## Diagnosis
 
 On 2026-10-02, the [official remote Elementor configuration](https://cdn.wpml.org/wpml-config/elementor/wpml-config.xml) registered `e-form`'s name at `form-name`. A wrapped string has its text one level deeper:
@@ -50,7 +52,7 @@ A separate integration session reported two completed cycles using **1.0.1 plus 
 
 This is reported evidence for that combined setup, not independent verification here, a test of 1.0.1 alone, or acceptance of 1.0.2. A signed preview without cookies is not the same as an ordinary public URL. The candidate had not been installed by that session at the time of the report. Its isolated before/after acceptance remains pending. Inherited defaults remain a [separate unresolved investigation](inherited-defaults-investigation.md).
 
-**Final reported session state:** the previous site configuration was restored because the separate inherited-default check remained unresolved under the site's acceptance requirements. The migration was not completed. The two successful override/form cycles remain limited observations, not an accepted migration. Candidate 1.0.2 was not installed; a request for specific authorization to test it without the addon was awaiting a response. Do not infer authorization or live candidate acceptance from the earlier test results.
+**Final reported session state:** the previous site configuration was restored because the separate inherited-default check remained unresolved under the site's acceptance requirements. The migration was not completed. The two successful override/form cycles remain limited observations, not an accepted migration. At that point, candidate 1.0.2 had not been installed. A later separately authorized test installed it in isolation and reproduced a title-only master export, also reproduced with fresh master/jobs under the earlier adapter; no master import was attempted. See the [master-origin follow-up](master-origin-compatibility.md). Neither observation establishes completed candidate acceptance.
 
 **Subsequent test plan:** a dedicated synthetic demo test of 1.0.2 without the addon has now been authorized, including separate master translation and a second source-update cycle. This supersedes the earlier pending authorization, not the earlier rollback or missing candidate results. Use the [frozen artifact and read-only binding protocol](live-demo-protocol.md); live acceptance remains pending.
 

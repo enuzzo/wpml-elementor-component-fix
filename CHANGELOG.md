@@ -1,6 +1,26 @@
 # Changelog
 
-## [Unreleased] — 1.0.2 candidate
+## [Unreleased] — 1.0.3 candidate
+
+### Fixed
+
+- Adapt direct exposed `e-heading.title` and `e-paragraph.paragraph` origins stored as `escaped-html` through the installed native node handler. Use a temporary `string` copy and restore the original type in the returned update, preserving native fields, identities and metadata.
+- Run native plain-text/HTML extraction/import probes in the actual element context, after native field processing; bypass adaptation when they pass. Preserve native active-field rules and avoid seeding its cache with a fabricated widget during registration.
+- Reject unexpected delegated mutations and unknown contracts; add no competing field paths, instance overrides, registry writes or component remapping.
+
+### Added
+
+- Add 12 isolated master-origin scenarios, bringing the public suite to 32. Cover native support and partial failures, HTML, identity deduplication, source immutability, repeated import/source edits, cache/active fields and conservative fallback.
+- Document the master type mismatch, inherited-default boundaries and before/after translation acceptance gates.
+
+### Validation and limits
+
+- Local synthetic checks pass. A separate local diagnostic passes 28 checks using the installed native node-handler source with environment stubs. Vendor sources and private evidence remain outside the public repository; this diagnostic does not load WordPress or certify a live cycle.
+- The native wrapper resolver supports string and legacy HTML origins but omits escaped-html. Fresh master exports under 1.0.2 and the earlier adapter both reportedly contained only the document title, supporting a pre-existing gap rather than a 1.0.2 regression.
+- General inheritance, null/forwarded bindings, master-language mapping and property-registry synchronization remain outside this narrow fix. The native omission of empty strings and literal `"0"` in master extraction is preserved and is not claimed fixed.
+- Component override and form-name filters are unchanged from 1.0.2. No completed 1.0.3 site test or definitive release is claimed. The published 1.0.1 release and frozen 1.0.2 package remain unchanged.
+
+## 1.0.2 candidate — unreleased history
 
 ### Fixed
 
@@ -23,7 +43,7 @@
 - Local PHP syntax checks, all 20 synthetic scenarios and package integrity/checksum checks passed. Consult GitHub Actions for the candidate's branch/commit-specific CI result.
 - Real-stack acceptance remains pending: compare existing translations before/after updating, then test fresh XLIFF export, native import and rendered results, including a second cycle after a source edit.
 - Record two reported cycles for 1.0.1 plus a separate form-name addon, explicitly outside candidate acceptance. Inherited output varied between observations; neither its cause nor a fix is established, and deserialized MCP reads do not expose raw bindings.
-- Record the final reported rollback to the previous site configuration: migration remains incomplete because inherited-default acceptance is unresolved. Candidate 1.0.2 was not installed or verified live.
+- Record the final reported rollback to the previous site configuration: migration remains incomplete because inherited-default acceptance is unresolved. At that point 1.0.2 had not been installed; its subsequent isolated master export test is recorded above and did not complete an import/render cycle.
 
 No 1.0.2 release has been published or installed by this project session. Its live CMS export/import/render cycle remains unverified. The published 1.0.1 tag and release assets remain unchanged.
 
