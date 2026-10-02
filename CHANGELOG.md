@@ -1,6 +1,17 @@
 # Changelog
 
-## [Unreleased] — 1.0.4 candidate
+## [Unreleased]
+
+No changes yet.
+
+## [1.0.4] — 2026-10-02
+
+First public update after 1.0.1; includes the form-name and direct master-origin fixes developed in the unpublished 1.0.2/1.0.3 candidates below.
+
+### Included from earlier candidates
+
+- Expose wrapped form names through `form-name>value` with the native `form-name` identity, preserving existing scalar/custom registrations.
+- Delegate direct exposed heading/paragraph `escaped-html` origins through WPML with temporary type conversion, native runtime probes and restored stored types. No fabricated overrides or registry writes.
 
 ### Fixed
 
@@ -12,10 +23,15 @@
 
 - Add 12 original select scenarios: 44 isolated public scenarios in total. A separate local diagnostic passes 20 checks on the installed native item handler and outer import dispatcher with environment stubs. These checks do not establish a live site cycle.
 - Keep the 1.0.3 component, master-origin and form-name filters unchanged. Preserve the frozen 1.0.2/1.0.3 packages.
-- Component-registry synchronization remains unimplemented. The first reported 1.0.4 cycle found no frontend defect from registry absence in its tested fixture; no metadata repair is justified by that result. Final acceptance still requires the second source-edit/reordering cycle.
-- First live 1.0.4 demo exports contain 64 units in each target language, including three human-readable select labels with distinct IDs, confirmed against the archived XLIFF files. The zero label is absent despite passing local item extraction. The site session subsequently reported successful native import and 168 error-free DOM comparisons, with zero preserved in data/rendering. Elementor removes the submitted blank option at source save, before WPML, so four rows persist; live coverage does not include a persisted blank row. The package stays frozen and no additional zero/metadata fix is introduced before the second cycle.
+- Two live cycles passed in English, French and German on one recorded stack, using fresh XLIFF jobs and native import. The second cycle verifies source edits, markup/links, form names and reordered select labels with stable identities. Saved target data retains technical values and contains no temporary IDs/aliases. See the [validation matrix](docs/releases/1.0.4.md).
+- Both demo export cycles contain 64 units per language, including three human-readable select labels with distinct identities. The zero option is absent from live XLIFF but preserved in data/rendering. Elementor removes the submitted blank option before WPML; four rows persist. Persisted blank-row live handling is not certified.
+- Final checks on eight existing public pages found HTTP 200 and form names matching the baseline. An observed layout overflow was also reproduced with the previous adapter; it is not a demonstrated plugin regression.
+- Component-registry synchronization remains unimplemented. Registry absence caused no frontend defect in the tested fixture; this does not certify every editor/component workflow or general inherited-default resolution.
+- Publish the exact 16,080-byte frozen ZIP tested live, SHA-256 `95fc63ddb72778105a677fbf1fb2e56dab5460af591bb136b51d69c34602b50f`. Its packaged readme retains pre-acceptance candidate wording to preserve the verified bytes; the release notes and repository documentation record final status. Earlier candidates were not separate public releases.
 
 ## 1.0.3 candidate — unreleased history
+
+Status below records that candidate, before the accepted 1.0.4 release above.
 
 ### Fixed
 
@@ -38,6 +54,8 @@
 - Component override and form-name filters are unchanged from 1.0.2. No completed 1.0.3 site test or definitive release is claimed. The published 1.0.1 release and frozen 1.0.2 package remain unchanged.
 
 ## 1.0.2 candidate — unreleased history
+
+Status below records that candidate, before the accepted 1.0.4 release above.
 
 ### Fixed
 
@@ -77,5 +95,6 @@ First public release. Extracted from an internal compatibility adapter into a re
 
 The internal 1.0.0 package was not a public release. These are contract-level tests; this public release has not yet completed a live CMS export/import/render verification.
 
-[Unreleased]: https://github.com/enuzzo/wpml-elementor-component-fix/compare/v1.0.1...codex/v4-form-name-compat
+[Unreleased]: https://github.com/enuzzo/wpml-elementor-component-fix/compare/v1.0.4...HEAD
+[1.0.4]: https://github.com/enuzzo/wpml-elementor-component-fix/compare/v1.0.1...v1.0.4
 [1.0.1]: https://github.com/enuzzo/wpml-elementor-component-fix/releases/tag/v1.0.1

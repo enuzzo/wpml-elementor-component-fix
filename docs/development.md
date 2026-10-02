@@ -33,13 +33,13 @@ python3 scripts/build.py
 git diff --check
 ```
 
-The 1.0.4 candidate runs 44 isolated scenarios (32 in frozen 1.0.3, 20 in frozen 1.0.2, 15 in published 1.0.1). Failures stop the runner. These are synthetic contract tests, including extraction/import behavior, source immutability, identities, links, native component support and conservative handling of unknown contracts. The form scenarios model field registration; the master scenarios model native delegation, runtime probes and cache/active-field behavior. Select scenarios cover collection adaptation, stable identities, duplicate labels, zero/blank values, import safety and native bypass. None is a live CMS test.
+Version 1.0.4 runs 44 isolated scenarios (32 in frozen 1.0.3, 20 in frozen 1.0.2, 15 in published 1.0.1). Failures stop the runner. These are synthetic contract tests, including extraction/import behavior, source immutability, identities, links, native component support and conservative handling of unknown contracts. The form scenarios model field registration; the master scenarios model native delegation, runtime probes and cache/active-field behavior. Select scenarios cover collection adaptation, stable identities, duplicate labels, zero/blank values, import safety and native bypass. None is a live CMS test.
 
 Inspect [.github/workflows/tests.yml](../.github/workflows/tests.yml) when changing prerequisites or checks. The current CI runs syntax checks, the synthetic suite and packaging on PHP 7.4, 8.1, 8.3 and 8.5. If GitHub CLI is available, inspect results with:
 
 ```sh
 gh run list --workflow tests.yml --limit 5
-gh release view v1.0.1
+gh release view v1.0.4
 ```
 
 Check the run's commit and individual jobs before claiming CI success for a change. An upstream run cannot validate uncommitted local documentation. Local use of PHP 8.5 does not by itself establish PHP 7.4 compatibility.
@@ -48,7 +48,7 @@ Check the run's commit and individual jobs before claiming CI success for a chan
 
 The builder reads the version from the PHP header, checks the WordPress stable tag, builds from an explicit allowlist, and verifies archive integrity and byte-for-byte payload equality. It uses fixed ZIP timestamps and permissions. `dist/` is generated and excluded from Git.
 
-For the current 1.0.4 candidate, inspect the archive and verify its separate checksum:
+For the current 1.0.4 release, inspect the archive and verify its separate checksum:
 
 ```sh
 python3 -m zipfile -l dist/netmilk-wpml-component-compat-1.0.4.zip
@@ -96,6 +96,8 @@ The subsequent 1.0.2 candidate adds the narrowly scoped [form-name registration 
 
 The 1.0.3 work extends the candidate to direct exposed heading/paragraph origins. Keep the [frozen 1.0.2 artifact](live-demo-protocol.md#frozen-candidate) unchanged, and require the native test gates before accepting the new behavior. Do not transfer a prior candidate's checksum or CI result to a later build.
 
-The 1.0.4 candidate retains those filters unchanged and adds [select-option delegation](select-option-compatibility.md). Preserve both earlier frozen packages. The [metadata investigation](integration-gaps.md) remains separate; registry absence alone is not proof of a frontend failure.
+The 1.0.4 release retains those filters unchanged and adds [select-option delegation](select-option-compatibility.md). Preserve both earlier frozen packages. The [metadata investigation](integration-gaps.md) remains separate; registry absence alone is not proof of a frontend failure.
+
+The [1.0.4 release record](releases/1.0.4.md) documents two accepted live cycles and the immutable package digest. Use that exact frozen ZIP for release distribution; do not rewrite its bundled candidate-era readme under the same version. Keep future documentation-only work outside the packaged payload when preserving published bytes.
 
 Report the local path, origin, branch and full HEAD commit, then list changed files and whether they are uncommitted, committed, pushed or published. Include commands run, runtime versions, outcomes, artifact path/checksum and any remaining evidence gaps. Record pending documentation work under Unreleased without changing the plugin version. Do not report installation or a release unless it was separately requested and actually completed.

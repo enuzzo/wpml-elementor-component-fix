@@ -1,5 +1,8 @@
 # Inherited component defaults: separate investigation
 
+> Historical investigation/candidate record. For current release status and the two accepted live cycles, see the [1.0.4 validation record](releases/1.0.4.md). Pending gates below describe the earlier investigation stage, not the current release status.
+
+
 Status: diagnosis and conditional proposals only, 2026-10-02. No inherited-default fix is included in the 1.0.2 candidate. No client exports, identifying site data, private fixtures or vendor implementation are included here.
 
 **Latest development:** isolated master exports under 1.0.2 and the earlier adapter both omitted exposed heading/paragraph origins. A narrowly scoped [1.0.3 master-origin type adapter](master-origin-compatibility.md) delegates direct escaped-html origins to the native node handler. This does not establish a fix for registry synchronization, null/forwarded bindings or inherited rendering. Earlier observations below retain their original test context.

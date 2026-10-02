@@ -1,4 +1,4 @@
-# Typed select options — 1.0.4 candidate
+# Typed select options — 1.0.4
 
 The candidate retains the component override, master-origin and form-name filters from 1.0.3 without changes. It adds a narrow adapter for the existing native `e-form-select` option-label registration. It does not synchronize component metadata or extend every form control/action.
 
@@ -33,11 +33,11 @@ A separate private local diagnostic passes **20 checks** on the installed native
 
 **Fixture boundary:** the five-row fixture in local synthetic/native-source diagnostics includes an empty label. In the live attempt, Elementor removes that submitted row during normal source saving/sanitization, before WPML; a fresh source read confirms four persisted rows. Thus the live result demonstrates native source omission of a blank option, not WPML extraction/import of a persisted fifth row. Keep attempted input, persisted source, XLIFF units and rendered options separate when reporting coverage.
 
-Registry metadata remains absent, but the site session found no resulting frontend defect in this fixture. The second cycle after source edits and option reordering remains pending; the first result does not certify untested component/editor workflows.
+Registry metadata remains absent, but both live cycles found no resulting frontend defect in this fixture. The second cycle used fresh jobs after source edits and option reordering: 64 units per language, stable option identities, successful native import, and zero errors in every desktop/mobile (168 comparisons per language/view) and anonymous HTML (167 per language) report. Final saved-data checks preserve technical values and confirm that no temporary IDs or collection alias persist. Eight existing public pages also passed the baseline form comparison. See the [release validation record](releases/1.0.4.md). These results do not certify untested component/editor workflows.
 
 ## Site acceptance
 
-Frozen local artifact: `netmilk-wpml-component-compat-1.0.4.zip` (16,080 bytes), SHA-256 `95fc63ddb72778105a677fbf1fb2e56dab5460af591bb136b51d69c34602b50f`. A checksum-addressed copy and its checksum file are preserved under ignored `dist/candidates/1.0.4/<SHA-256>/`. This is a test candidate, not a published release.
+Frozen local artifact: `netmilk-wpml-component-compat-1.0.4.zip` (16,080 bytes), SHA-256 `95fc63ddb72778105a677fbf1fb2e56dab5460af591bb136b51d69c34602b50f`. A checksum-addressed copy and its checksum file are preserved under ignored `dist/candidates/1.0.4/<SHA-256>/`. The official 1.0.4 release distributes these exact tested bytes. The bundled readme retains historical candidate wording; the repository and release notes record final acceptance.
 
 1. Preserve the frozen 1.0.3 package and verify the new ZIP's checksum. Capture existing translations before the controlled update; inspect them after activation before importing anything. Keep other compatibility adapters/addons inactive during this candidate test and retain rollback.
 2. Confirm that the effective select registration matches the known native rule. If the expected labels remain absent, inspect installed/cached configuration and site overrides; the plugin deliberately does not invent a missing registration.
@@ -46,4 +46,4 @@ Frozen local artifact: `netmilk-wpml-component-compat-1.0.4.zip` (16,080 bytes),
 5. Change a source label and reorder options, then repeat with fresh jobs. Confirm stable identities for unchanged technical values and correct destination rows. Verify source immutability, form names and existing component overrides.
 6. Inspect actual inherited/overridden rendering, links and forms in desktop/mobile and unauthenticated contexts. Registry absence alone does not establish frontend failure; record metadata consistency separately. Do not repair targets manually to pass this gate.
 
-The first 1.0.4 site cycle is reported successful on the tested fixture. Final acceptance and release remain pending the second source-edit/reordering cycle. The registry investigation continues only if further rendering/metadata findings require it; the candidate makes no speculative registry writes.
+Both 1.0.4 site cycles and the final saved-data/production-page gates passed on the tested fixture. Repeat the acceptance procedure on other stacks. Registry investigation should resume only if concrete rendering/metadata findings require it; the plugin makes no speculative registry writes.

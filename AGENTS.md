@@ -2,7 +2,7 @@
 
 ## Project purpose and scope
 
-Netmilk — WPML Elementor Component Fix is a standalone, public WordPress plugin: a temporary, reusable adapter for explicit Elementor V4 component text overrides stored as `escaped-html` that the native WPML handler omits. It also addresses the narrow `e-form` name registration mismatch (`form-name>value` with native identity `form-name`). Version 1.0.3 adapts the escaped-html type in memory for direct exposed `e-heading.title` and `e-paragraph.paragraph` master origins. The 1.0.4 candidate also delegates typed select-option labels through WPML’s native item handler. It does not translate independently. General inherited-default resolution, null/forwarded bindings, other master properties and other form fields/actions remain unsupported. See [architecture](docs/architecture.md) for the implementation.
+Netmilk — WPML Elementor Component Fix is a standalone, public WordPress plugin: a temporary, reusable adapter for explicit Elementor V4 component text overrides stored as `escaped-html` that the native WPML handler omits. It also addresses the narrow `e-form` name registration mismatch (`form-name>value` with native identity `form-name`). Version 1.0.3 adapts the escaped-html type in memory for direct exposed `e-heading.title` and `e-paragraph.paragraph` master origins. Version 1.0.4 also delegates typed select-option labels through WPML’s native item handler. It does not translate independently. General inherited-default resolution, null/forwarded bindings, other master properties and other form fields/actions remain unsupported. See [architecture](docs/architecture.md) for the implementation.
 
 ## Repository map
 

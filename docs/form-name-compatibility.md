@@ -1,5 +1,8 @@
 # V4 form-name compatibility — 1.0.2 candidate
 
+> Historical investigation/candidate record. For current release status and the two accepted live cycles, see the [1.0.4 validation record](releases/1.0.4.md). Pending gates below describe the earlier investigation stage, not the current release status.
+
+
 The 1.0.2 artifact and the observations below remain historical references. The subsequent [1.0.3 work](master-origin-compatibility.md) keeps this form filter unchanged and investigates a separate master-origin omission; no completed live candidate acceptance is claimed.
 
 ## Diagnosis

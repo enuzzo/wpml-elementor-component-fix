@@ -1,6 +1,6 @@
 # Integration gaps after the 1.0.3 master cycle
 
-This records the 1.0.3 diagnosis and evidence handoff. The frozen 1.0.3 ZIP remains unchanged. The subsequent [1.0.4 candidate](select-option-compatibility.md) addresses select labels only; component-registry synchronization remains unimplemented pending a safe native contract and actual rendering evidence.
+This records the 1.0.3 diagnosis and evidence handoff. The frozen 1.0.3 ZIP remains unchanged. The subsequent [1.0.4 release](releases/1.0.4.md) addresses select labels and passed two live cycles plus saved-data/production-page checks. Component-registry synchronization remains unimplemented; the tested rendering does not justify adding it.
 
 ## Master metadata: a separate native synchronization gap
 
@@ -56,7 +56,7 @@ The installed item handler was subsequently supplied privately and inspected. A 
 
 The same diagnostic confirms native omission of the visible label `"0"` and the empty label. The site's attempted source input includes two identical visible labels with distinct technical values, a zero label and an empty label. A fresh source read later confirmed that Elementor drops the empty-label row during normal saving, before WPML, leaving four persisted rows. The subsequent 1.0.4 live cycle reportedly preserves zero and translates the three human labels; it does not exercise a persisted blank row. Future tests must distinguish those cases, preserve technical values and maintain distinct, stable identities after reordering. Visible labels and numeric positions are insufficient as identity sources.
 
-These isolated findings do not prove which configuration the live job actually loaded. Compare the effective registration with the public rule before selecting a repair. Another registration could duplicate future native support; a compatible adapter would need native extraction/import delegation, safe item identity and insertion-path behavior, plus conservative fallback for ambiguous option values. Select labels remain outside the frozen 1.0.3 runtime. The subsequent [1.0.4 candidate](select-option-compatibility.md) implements guarded native delegation for the known rule, tested locally; effective site registration and its live cycle still require verification.
+These isolated findings do not prove which configuration the live job actually loaded. Compare the effective registration with the public rule before selecting a repair. Another registration could duplicate future native support; a compatible adapter would need native extraction/import delegation, safe item identity and insertion-path behavior, plus conservative fallback for ambiguous option values. Select labels remain outside the frozen 1.0.3 runtime. The subsequent [1.0.4 candidate](select-option-compatibility.md) implements guarded native delegation for the known rule, subsequently accepted through two live export/import/render cycles on one recorded stack. See the [1.0.4 validation record](releases/1.0.4.md); other stacks still require their own acceptance.
 
 ## Remaining read-only integration evidence
 

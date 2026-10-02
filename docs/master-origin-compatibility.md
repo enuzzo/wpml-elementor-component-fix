@@ -1,5 +1,8 @@
 # Direct exposed master text — 1.0.3 candidate
 
+> Historical investigation/candidate record. For current release status and the two accepted live cycles, see the [1.0.4 validation record](releases/1.0.4.md). Pending gates below describe the earlier investigation stage, not the current release status.
+
+
 ## Evidence and diagnosis
 
 A separate integration session reported that a synthetic master with an exposed heading and paragraph produced only its document-title translation unit in three fresh target-language XLIFF jobs with 1.0.2 alone. An independently created equivalent master and three new jobs reproduced the omission with the earlier adapter alone. No master import was performed. This supports a pre-existing gap, not a regression introduced by 1.0.2. A review of the verified earlier adapter backup confirmed that it handles form names and explicit instance overrides, without a master-origin adapter.

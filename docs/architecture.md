@@ -16,13 +16,13 @@ The subclass turns string-valued `escaped-html` overrides into `string` **in a c
 
 No database API, post/meta write, translation engine, independent destination synchronization, CSS or JavaScript is added. General inherited-default resolution, assets, other form fields/actions and other component value types remain outside the adapter's scope.
 
-## Form-name registration (1.0.2 candidate)
+## Form-name registration (included in 1.0.4)
 
 This independent filter adds `form-name>value` with `field_id` `form-name` only alongside a single known flat `form-name` registration. It copies the existing field label and optional `LINE` editor metadata and leaves the scalar path intact, following the alternative-path pattern in WPML's public Elementor configuration. It does not read, flatten or write Elementor data; the native field machinery owns extraction and import.
 
 Any existing `form-name>` path, conflicting identity, custom integration, repeater or unknown widget/field configuration prevents the addition. Repeated filtering adds nothing further. These are configuration guards, not runtime native form extraction/import probes: component overrides and master origins have separate runtime probes. See [the diagnosis and validation limits](form-name-compatibility.md).
 
-## Master-origin delegation (1.0.3 candidate)
+## Master-origin delegation (included in 1.0.4)
 
 For recognized heading/paragraph field configurations, a supplemental integration composes `WPML_Elementor_Translatable_Nodes` with only the original text fields. Native public methods own extraction, names, active-field rules and updates. A request-local registration guard supplies that scoped configuration without recursively registering the adapter. No alternative origin field paths are added.
 
@@ -32,7 +32,7 @@ When support is missing, only a recognized direct escaped-html origin is convert
 
 The component and form filters are unchanged from 1.0.2. The master adapter does not synchronize the property registry, map component IDs or materialize instance overrides. See [master-origin diagnosis and acceptance](master-origin-compatibility.md).
 
-## Select-option delegation (1.0.4 candidate)
+## Select-option delegation (1.0.4)
 
 A guarded filter replaces only the recognized `e-form-select` item registration with a supplemental module composing the same native item handler. Original ordinary fields remain. Unknown/custom configurations are left unchanged. Runtime probes check distinct native identities, plain/HTML/zero labels and exact item import; successful support uses the original native handler with unmodified data.
 
