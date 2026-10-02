@@ -11,6 +11,7 @@
 
 - Add five isolated form scenarios with original synthetic field-path doubles covering extraction, import, preserved metadata/identities, idempotence, native registration, fallback and coexistence with the component adapter.
 - Add development/session handoff and form-name diagnosis guides, including a before/after translation acceptance procedure and rollback expectations.
+- Add a dedicated demo protocol with a frozen candidate digest and read-only checks for raw bindings, master-language mapping and rendering context; test authorization does not establish acceptance.
 - Document a separate inherited-default investigation with synthetic fixture designs and conditional proposals; no runtime support for inherited values is added.
 
 ### Changed

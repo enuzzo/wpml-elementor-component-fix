@@ -14,6 +14,8 @@ Do not classify inherited defaults as fixed or infer a universal patch from this
 
 The reporting session subsequently restored the previous site configuration because this unresolved check prevented acceptance under the site's requirements. Migration remains incomplete. This rollback does not establish that the adapter caused the inherited-default behavior, and the successful override/form checks do not resolve that behavior. Candidate 1.0.2 remains uninstalled and unverified live in that session.
 
+A subsequent isolated demo test has been authorized. The [read-only binding and mapping protocol](live-demo-protocol.md) distinguishes persisted properties, WPML relationships and the document actually rendered. No results from that new test are established yet.
+
 ## What the public model establishes
 
 An instance may reference a component without any explicit overrides. Elementor's [instance documentation](https://github.com/elementor/elementor/blob/d82b5ccd2091c21af3bb248878a494bd94989627/docs/atomic-builder/components/instances-and-overrides.md) describes that valid shape. Its [overridable transformer](https://github.com/elementor/elementor/blob/d82b5ccd2091c21af3bb248878a494bd94989627/modules/components/transformers/overridable-transformer.php) starts from the property's origin value and replaces it only when a matching override exists.

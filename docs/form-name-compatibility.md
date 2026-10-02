@@ -52,6 +52,8 @@ This is reported evidence for that combined setup, not independent verification 
 
 **Final reported session state:** the previous site configuration was restored because the separate inherited-default check remained unresolved under the site's acceptance requirements. The migration was not completed. The two successful override/form cycles remain limited observations, not an accepted migration. Candidate 1.0.2 was not installed; a request for specific authorization to test it without the addon was awaiting a response. Do not infer authorization or live candidate acceptance from the earlier test results.
 
+**Subsequent test plan:** a dedicated synthetic demo test of 1.0.2 without the addon has now been authorized, including separate master translation and a second source-update cycle. This supersedes the earlier pending authorization, not the earlier rollback or missing candidate results. Use the [frozen artifact and read-only binding protocol](live-demo-protocol.md); live acceptance remains pending.
+
 ## Local verification — 2026-10-02
 
 PHP 8.5.11 passed lint on all eight PHP files and all 20 isolated scenarios, including 96 form assertions. Python 3.14.7 built the candidate and verified its exact three-file payload. The original component filter is byte-for-byte unchanged from v1.0.1. At this local verification stage, the candidate had no remote CI result; check [GitHub Actions](https://github.com/enuzzo/wpml-elementor-component-fix/actions/workflows/tests.yml) for subsequent results on the candidate's specific branch and commit. A baseline run does not validate candidate changes.
