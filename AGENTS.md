@@ -24,6 +24,8 @@ For direct master text origins, compose the native node handler with its origina
 
 For select options, require the known native item registration and unique nonempty technical values. Keep the collection alias, surrogate item IDs and zero-label placeholder in memory only. Delegate string naming and import to WPML; never translate technical option values or use labels/positions as identity. Reject collisions and unexpected mutations. Leave other configurations unchanged and bypass normalization when native probes pass. Frozen candidates must not be overwritten.
 
+The unreleased 1.0.5 candidate adds a frontend global-class label fallback. Require bidirectional WPML kit mapping to the configured source kit; read it through an isolated, identity-checked Kit instance because the document manager can redirect source reads. Preserve all target declarations (labels, order and class post IDs), local classes and native resolved output. Exclude editor/preview, admin, REST, AJAX and CLI. Never change kit/language state, metadata, CSS or saved Elementor data. Unknown contracts and ambiguous labels are no-ops. Validate actual loaded CSS and computed styles separately before release.
+
 ## Translation and site boundaries
 
 Translate through WPML only. Never write translated Elementor data directly or bypass WPML. Real-stack checks use draft source pages, fresh translation jobs, XLIFF export, native WPML import and rendered-page inspection. Read the specific site's project instructions before site work; repository work does not authorize installation, publication or client-site changes.

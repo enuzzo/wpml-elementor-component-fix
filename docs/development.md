@@ -33,7 +33,7 @@ python3 scripts/build.py
 git diff --check
 ```
 
-The development suite runs 45 isolated scenarios (44 at the 1.0.4 release) (32 in frozen 1.0.3, 20 in frozen 1.0.2, 15 in published 1.0.1). Failures stop the runner. These are synthetic contract tests, including extraction/import behavior, source immutability, identities, links, native component support and conservative handling of unknown contracts. The form scenarios model field registration; the master scenarios model native delegation, runtime probes and cache/active-field behavior. Select scenarios cover collection adaptation, stable identities, duplicate labels, zero/blank values, import safety and native bypass. The additional [legacy-source scenario](legacy-master-recovery.md) checks numeric modern origins and explicitly leaves old target migration to a separately verified native job. None is a live CMS test.
+The development suite runs 63 isolated scenarios (44 at the 1.0.4 release) (32 in frozen 1.0.3, 20 in frozen 1.0.2, 15 in published 1.0.1). Failures stop the runner. These are synthetic contract tests, including extraction/import behavior, source immutability, identities, links, native component support and conservative handling of unknown contracts. The form scenarios model field registration; the master scenarios model native delegation, runtime probes and cache/active-field behavior. Select scenarios cover collection adaptation, stable identities, duplicate labels, zero/blank values, import safety and native bypass. The additional [legacy-source scenario](legacy-master-recovery.md) checks numeric modern origins and explicitly leaves old target migration to a separately verified native job. Eighteen additional global-class scenarios check fallback, native/target ownership, kit identity, language context, non-frontend exclusion, errors and unknown contracts. None is a live CMS test.
 
 Inspect [.github/workflows/tests.yml](../.github/workflows/tests.yml) when changing prerequisites or checks. The current CI runs syntax checks, the synthetic suite and packaging on PHP 7.4, 8.1, 8.3 and 8.5. If GitHub CLI is available, inspect results with:
 
@@ -48,12 +48,12 @@ Check the run's commit and individual jobs before claiming CI success for a chan
 
 The builder reads the version from the PHP header, checks the WordPress stable tag, builds from an explicit allowlist, and verifies archive integrity and byte-for-byte payload equality. It uses fixed ZIP timestamps and permissions. `dist/` is generated and excluded from Git.
 
-For the current 1.0.4 release, inspect the archive and verify its separate checksum:
+For the current 1.0.5 development candidate, inspect the archive and verify its separate checksum:
 
 ```sh
-python3 -m zipfile -l dist/netmilk-wpml-component-compat-1.0.4.zip
+python3 -m zipfile -l dist/netmilk-wpml-component-compat-1.0.5.zip
 (cd dist && shasum -a 256 -c SHA256SUMS)
-git check-ignore dist/netmilk-wpml-component-compat-1.0.4.zip dist/SHA256SUMS
+git check-ignore dist/netmilk-wpml-component-compat-1.0.5.zip dist/SHA256SUMS
 ```
 
 The exact ZIP payload is:
@@ -89,6 +89,10 @@ This is a historical baseline, not proof of future checkout or dependency state:
 - The latest completed [CI run for that commit](https://github.com/enuzzo/wpml-elementor-component-fix/actions/runs/36980603102) succeeded.
 - Local setup checks passed with PHP 8.5.11 and Python 3.14.7: all six PHP files passed lint, all 15 synthetic scenarios passed, and the build verified its allowlisted payload. The generated ZIP's SHA-256 was `b8b1366e57b3a281baca601ec48e67ca3867442beba20fb281df03a6eb0432b5`, matching the published release asset's digest.
 - The plugin declares PHP 7.4+ and WordPress 6.5+. No WordPress stack was installed for this setup; live export/import/render certification remains open.
+
+## Current candidate — 1.0.5
+
+The candidate adds only the guarded frontend global-class fallback; the four translation filters remain unchanged. Use the [frozen artifact and acceptance checklist](global-class-rendering.md#105-candidate-contract). Do not overwrite frozen candidates or publish a release before separate live acceptance. Record installation, CSS/computed-style checks and fresh translation regression cycles independently.
 
 ## End-of-session handoff
 

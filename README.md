@@ -15,6 +15,8 @@ Built by **Netmilk Studio**. Temporary by design, reusable across sites. Indepen
 
 **Current release: [1.0.4](https://github.com/enuzzo/wpml-elementor-component-fix/releases/tag/v1.0.4).** It combines the original component-override adapter with form-name, direct master-text and select-option compatibility. Two fresh-job translation cycles passed on one recorded live stack. See the [release validation and limits](docs/releases/1.0.4.md), [changelog](CHANGELOG.md) and commit-specific [CI results](https://github.com/enuzzo/wpml-elementor-component-fix/actions/workflows/tests.yml). Live acceptance covers the tested fixture; it is not universal compatibility certification.
 
+**Development branch: 1.0.5 candidate, not a public release.** A guarded frontend fallback recovers unresolved global-class labels from the configured source kit when WPML confirms the translated-kit relationship. It preserves native output, target-owned and local classes, and excludes editor/preview and non-frontend requests. It does not copy metadata, change CSS or modify translations. See the [candidate contract, frozen digest and live gates](docs/global-class-rendering.md#105-candidate-contract). The query-only mechanism was demonstrated separately; the packaged candidate still needs live acceptance.
+
 ## What is new in 1.0.4?
 
 V4 select options can be registered correctly yet omitted by the native item handler: its collection lookup expects a flat key, and its identifier logic expects an item ID absent from typed options. Version 1.0.4 supplies an in-memory collection alias and stable surrogate item IDs derived from unique technical values, then delegates extraction, string naming and import to WPML. It exposes only visible labels for translation; technical values remain unchanged. Duplicate labels stay distinct after reordering. The delegated item extractor includes `"0"` in local checks, but both live XLIFF cycles omit it; blank labels remain omitted.
@@ -35,7 +37,7 @@ Some V4 forms store their name as a wrapped string, while WPML's configuration p
 
 **Rendering limitation found after release — 2026-10-03:** a separate production-page investigation found unresolved global class IDs while embedded translated templates rendered with a kit whose class labels/order were empty. The source-language kit had the expected mapping. The monitored class output stayed identical with 1.0.4 active, inactive and reactivated. This identifies a rendering-context problem; it does not establish when the translated kit state originated or exclude historical import effects. **1.0.4 does not fix global-class/kit resolution.** See the [diagnostic findings and acceptance checks](docs/global-class-rendering.md). The earlier demo cycles and eight-page HTTP/form-name baseline were not a comprehensive visual audit.
 
-The development suite now has 45 synthetic scenarios (44 at the 1.0.4 release), including 12 select-option scenarios. Master-origin checks cover native delegation, runtime probes, active-field/cache behavior and conservative fallback. Form-name checks remain configuration-level guards. A separate local diagnostic exercised the installed native node-handler source with environment stubs; it does not certify a WordPress translation cycle. The earlier 1.0.2 package remains frozen, and its [form-name diagnosis](docs/form-name-compatibility.md) records historical test evidence separately.
+The development suite now has 63 synthetic scenarios (44 at the 1.0.4 release), including 12 select-option scenarios and 18 frontend global-class scenarios. Master-origin checks cover native delegation, runtime probes, active-field/cache behavior and conservative fallback. Form-name checks remain configuration-level guards. A separate local diagnostic exercised the installed native node-handler source with environment stubs; it does not certify a WordPress translation cycle. The earlier 1.0.2 package remains frozen, and its [form-name diagnosis](docs/form-name-compatibility.md) records historical test evidence separately.
 
 Before accepting an update on another site:
 
@@ -102,7 +104,7 @@ Updates are manual through GitHub release ZIPs. The plugin does not install an u
 | WordPress | Declared minimum 6.5; WordPress runtime not included in the test harness |
 | Elementor | V4 `e-component` instances with explicit `escaped-html` overrides |
 | WPML | Existing `WPML\PB\Elementor\V4\Component\Overrides` handler using the supported untyped method contract |
-| Regression tests | 45 development scenarios (44 at the 1.0.4 release) with original synthetic doubles, including component behavior, form registration, master origins and select options; 15 scenarios in published 1.0.1 |
+| Regression tests | 63 development scenarios (44 at the 1.0.4 release) with original synthetic doubles, including component behavior, form registration, master origins, select options and global-class fallback; 15 scenarios in published 1.0.1 |
 | Live integration acceptance | Two cycles on one recorded stack; [scope, versions and limits](docs/releases/1.0.4.md) |
 
 The implementation was informed by a handler contract observed in WPML 4.9.7. Public tests contain original synthetic examples, **not** WPML vendor code or client exports. CI is a PHP/contract check, not a substitute for a real WordPress + Elementor + WPML export/import/render test.
@@ -148,6 +150,6 @@ php tests/run.php
 python3 scripts/build.py
 ```
 
-The build uses an explicit payload allowlist and deterministic ZIP metadata. Current output: `dist/netmilk-wpml-component-compat-1.0.4.zip` and `dist/SHA256SUMS`. Packages contain only the PHP entrypoint, WordPress readme and GPL license, inside one plugin folder. Building locally does not publish a release. The official 1.0.4 asset is byte-identical to the frozen live-tested candidate; its bundled readme retains historical candidate wording. GitHub release notes and this repository record final acceptance. Preserve earlier frozen packages.
+The build uses an explicit payload allowlist and deterministic ZIP metadata. Current development output: `dist/netmilk-wpml-component-compat-1.0.5.zip` and `dist/SHA256SUMS`. Packages contain only the PHP entrypoint, WordPress readme and GPL license, inside one plugin folder. Building locally does not publish a release. The official 1.0.4 asset is byte-identical to the frozen live-tested candidate; its bundled readme retains historical candidate wording. GitHub release notes and this repository record final acceptance. Preserve earlier frozen packages.
 
 [Contributing](CONTRIBUTING.md) · [Changelog](CHANGELOG.md) · [GPL-2.0-or-later](LICENSE)

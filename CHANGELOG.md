@@ -2,6 +2,13 @@
 
 ## [Unreleased]
 
+### 1.0.5 candidate — not released
+
+- Add a frontend-only fallback after Elementor's native class transformer. Resolve only remaining global IDs from the configured source kit's ordered labels, with bidirectional WPML kit mapping, published-kit checks and an isolated source Kit whose identity is verified. The normal document getter may redirect a source ID to its translated kit.
+- Preserve native resolved names, local classes and target declarations found in labels, order or class post IDs, including incomplete declarations. Reject ambiguous/colliding labels and unknown contracts. Exclude editor/preview, admin, REST, AJAX and CLI; perform no persistent writes, language switching or CSS regeneration.
+- Keep all four 1.0.4 translation filters unchanged. Add 18 original global-class scenarios, bringing the development suite to 63. A separate query-only proof resolved the monitored IDs; it was not an installation or acceptance test of this packaged candidate. Live CSS/computed-style and translation regression checks remain pending.
+- Freeze the installable 17,923-byte candidate ZIP with SHA-256 `f29eddb6b429a3638c3e75e7e6731bea1abcd8294f4fd248d9bfa5821b3f4844`. No tag or public release is created; the official 1.0.4 artifact remains unchanged. See the [candidate gates](docs/global-class-rendering.md#105-candidate-contract).
+
 ### Documentation
 
 - Record a post-release global-class rendering investigation: embedded translated templates used kits with empty class labels/order, leaving technical class IDs unresolved despite correct mappings in separate REST requests. The monitored output was unchanged across an active/inactive/reactivated 1.0.4 comparison. This is an observed rendering-context failure, not a demonstrated regression introduced by the adapter; historical import causality remains unverified.

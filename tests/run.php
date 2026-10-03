@@ -6,6 +6,7 @@ $cases = [
     'form-name.php' => ['registration', 'roundtrip', 'native', 'unknown', 'combined'],
     'master-origins.php' => ['registration', 'roundtrip', 'fixed', 'text_only', 'import_broken', 'throws', 'unsafe', 'unknown', 'combined', 'absent', 'typed', 'cache', 'legacy-source'],
     'select-options.php' => ['broken', 'fixed', 'nested_only', 'import_broken', 'throws', 'unexpected_warning', 'unsafe', 'collision', 'unknown', 'absent', 'typed', 'combined'],
+    'global-classes.php' => ['fallback', 'native', 'target_owned', 'mapping', 'preview', 'admin', 'rest', 'ajax', 'cli', 'identity', 'metadata', 'labels', 'exceptions', 'reentry', 'absence', 'malformed', 'context_switch', 'unknown'],
 ];
 $count = 0;
 foreach ($cases as $file => $modes) {

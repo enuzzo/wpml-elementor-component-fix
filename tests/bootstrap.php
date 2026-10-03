@@ -17,6 +17,10 @@ class WPML_PB_String {
     public function get_name() { return $this->name; }
 }
 function add_filter($hook, $callback, $priority) {
+    if ($hook === 'elementor/atomic-widgets/settings/transformers/classes' && $priority === 100) {
+        $GLOBALS['global_class_filter'] = $callback;
+        return;
+    }
     if ($hook !== 'wpml_elementor_widgets_to_translate' || $priority !== 100) {
         throw new RuntimeException('Unexpected registration');
     }

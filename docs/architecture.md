@@ -1,6 +1,6 @@
 # How the temporary adapter works
 
-The entrypoint registers four independent filters on `wpml_elementor_widgets_to_translate` at priority 100. The component filter acts only when the `e-component` integration still names the installed native `WPML\PB\Elementor\V4\Component\Overrides` class and `WPML_PB_String` is available. Separate filters supplement the known form-name registration, attach a narrowly scoped native delegate for direct exposed heading/paragraph origins, and route the known select-item registration through a native delegate. Unrelated widgets and other integration handlers are preserved.
+The entrypoint registers four independent filters on `wpml_elementor_widgets_to_translate` at priority 100. The component filter acts only when the `e-component` integration still names the installed native `WPML\PB\Elementor\V4\Component\Overrides` class and `WPML_PB_String` is available. Separate filters supplement the known form-name registration, attach a narrowly scoped native delegate for direct exposed heading/paragraph origins, and route the known select-item registration through a native delegate. Unrelated widgets and other integration handlers are preserved. The unreleased 1.0.5 candidate adds one frontend class-label filter, described below; the four translation filters are unchanged.
 
 ## Native-first decision
 
@@ -14,7 +14,7 @@ These probes check a small known format; they do not certify all component field
 
 The subclass turns string-valued `escaped-html` overrides into `string` **in a copy** passed to the parent's `get`/`update`. The native handler supplies the identifiers and translated override item. When an original item was `escaped-html`, the subclass restores that type in the returned item. WPML then applies its normal import workflow.
 
-No database API, post/meta write, translation engine, independent destination synchronization, CSS or JavaScript is added. General inherited-default resolution, assets, other form fields/actions and other component value types remain outside the adapter's scope.
+The translation adapters add no database API, post/meta write, translation engine, independent destination synchronization, CSS or JavaScript. General inherited-default resolution, assets, other form fields/actions and other component value types remain outside their scope. The separate 1.0.5 frontend fallback reads kit metadata but never writes it.
 
 ## Form-name registration (included in 1.0.4)
 
@@ -39,6 +39,14 @@ A guarded filter replaces only the recognized `e-form-select` item registration 
 For the known missing support, the copy exposes the nested collection through its literal registered key and supplies temporary item IDs derived from unique, nonempty technical values. WPML generates the actual string names. A collision-free placeholder lets native extraction include a zero label, then its returned string is restored to `"0"`. Blank labels remain omitted. Neither label text nor array position determines the surrogate ID.
 
 Both extraction and import require unique native identities. Import accepts only the expected item with its visible label changed, strips the temporary item ID, and lets the native outer dispatcher write the original nested collection path. Technical values, wrappers and metadata stay intact. Copies, probes and error-handler restoration are request-local; no metadata synchronization is added. See [select-option contracts and acceptance](select-option-compatibility.md).
+
+## Frontend global-class labels (1.0.5 candidate)
+
+At priority 100 on `elementor/atomic-widgets/settings/transformers/classes`, inspect only global IDs still present after native resolution. Require a non-default frontend language, a published translated Kit and a bidirectional WPML `elementor_library` mapping to the published kit named by `elementor_active_kit`. Admin, WordPress/Elementor preview, REST, AJAX and CLI contexts are excluded.
+
+Construct an isolated source Kit with its explicit post ID and verify the resulting identity. Do not use the document manager, which can redirect the source ID to its translation. An explicit source repository in frontend mode supplies ordered labels. Target labels, order and class post IDs each establish ownership and prevent fallback, even if incomplete. Already resolved names, local classes, input keys/order and unknown IDs remain unchanged. Ambiguous, colliding or non-ASCII/simple CSS identifier labels remain native.
+
+The filter reads only the small label/order maps; it does not load full class definitions, call repository migration/cleanup methods, write metadata, regenerate CSS, switch language or replace the active kit. Native errors return the input, and a `finally`-protected reentry guard prevents constructor callbacks from recursing. No support decision or label map is shared across rendering contexts. Loaded stylesheet selectors and computed styles require live acceptance: identity checks do not prove that CSS was delivered correctly. See the [candidate contract and live gates](global-class-rendering.md#105-candidate-contract).
 
 ## Tests and limitations
 

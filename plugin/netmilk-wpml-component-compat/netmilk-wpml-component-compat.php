@@ -1,8 +1,8 @@
 <?php
 /**
  * Plugin Name: Netmilk — WPML Elementor Component Fix
- * Description: Adapts Elementor V4 component text, form names and select-option labels through native WPML translation handling.
- * Version: 1.0.4
+ * Description: Native WPML text compatibility and a guarded frontend global-class fallback for translated Elementor V4 kits.
+ * Version: 1.0.5
  * Requires PHP: 7.4
  * Requires at least: 6.5
  * Plugin URI: https://github.com/enuzzo/wpml-elementor-component-fix
@@ -772,3 +772,156 @@ class Netmilk_WPML_Select_Options {
     }
 }
 add_filter( 'wpml_elementor_widgets_to_translate', [ 'Netmilk_WPML_Select_Options', 'register' ], 100 );
+
+/** Frontend-only fallback; never changes kit metadata, language or saved elements. */
+class Netmilk_WPML_Global_Class_Labels {
+    private static $running = false;
+
+    private static function post_id( $value ) {
+        if ( is_int( $value ) && $value > 0 ) {
+            return $value;
+        }
+        if ( is_string( $value ) && preg_match( '/^[1-9][0-9]*$/D', $value )
+            && (string) (int) $value === $value ) {
+            return (int) $value;
+        }
+        return 0;
+    }
+
+    private static function global_id( $value ) {
+        return is_string( $value ) && 1 === preg_match( '/^g-[a-zA-Z0-9_-]+$/D', $value );
+    }
+
+    public static function filter( $ids ) {
+        if ( self::$running || ! is_array( $ids ) ) {
+            return $ids;
+        }
+        $has_unresolved = false;
+        foreach ( $ids as $id ) {
+            if ( ! is_string( $id ) ) {
+                return $ids;
+            }
+            $has_unresolved = $has_unresolved || self::global_id( $id );
+        }
+        if ( ! $has_unresolved ) {
+            return $ids;
+        }
+        self::$running = true;
+        try {
+            return self::resolve( $ids );
+        } catch ( Throwable $error ) {
+            return $ids;
+        } finally {
+            self::$running = false;
+        }
+    }
+
+    private static function resolve( $ids ) {
+        $kit_class = '\\Elementor\\Core\\Kits\\Documents\\Kit';
+        $repository = '\\Elementor\\Modules\\GlobalClasses\\Global_Classes_Repository';
+        if ( ! class_exists( '\\Elementor\\Plugin' ) || ! class_exists( $kit_class )
+            || ! is_callable( [ $repository, 'make' ] )
+            || is_admin() || is_preview()
+            || ( defined( 'REST_REQUEST' ) && REST_REQUEST )
+            || ( defined( 'DOING_AJAX' ) && DOING_AJAX )
+            || ( defined( 'WP_CLI' ) && WP_CLI ) ) {
+            return $ids;
+        }
+        $plugin = \Elementor\Plugin::$instance;
+        if ( ! isset( $plugin->preview, $plugin->kits_manager )
+            || ! is_callable( [ $plugin->preview, 'is_editor_or_preview' ] )
+            || false !== $plugin->preview->is_editor_or_preview()
+            || ! is_callable( [ $plugin->kits_manager, 'get_active_kit' ] ) ) {
+            return $ids;
+        }
+        $base_id = self::post_id( get_option( 'elementor_active_kit' ) );
+        $default_language = apply_filters( 'wpml_default_language', null );
+        $language = apply_filters( 'wpml_current_language', null );
+        if ( ! $base_id || ! is_string( $default_language ) || '' === $default_language
+            || ! is_string( $language ) || '' === $language || 'all' === $language
+            || 'all' === $default_language || $language === $default_language ) {
+            return $ids;
+        }
+        $kit = $plugin->kits_manager->get_active_kit();
+        if ( ! $kit instanceof $kit_class ) {
+            return $ids;
+        }
+        $kit_id = self::post_id( $kit->get_id() );
+        if ( ! $kit_id || $kit_id === $base_id
+            || self::post_id( apply_filters( 'wpml_object_id', $kit_id, 'elementor_library', false, $default_language ) ) !== $base_id
+            || self::post_id( apply_filters( 'wpml_object_id', $base_id, 'elementor_library', false, $language ) ) !== $kit_id ) {
+            return $ids;
+        }
+        foreach ( [ $base_id, $kit_id ] as $post_id ) {
+            if ( 'elementor_library' !== get_post_type( $post_id )
+                || 'publish' !== get_post_status( $post_id )
+                || 'kit' !== get_post_meta( $post_id, '_elementor_template_type', true ) ) {
+                return $ids;
+            }
+        }
+        // Protect even incomplete target declarations; they are not ours to replace.
+        $target_labels = $kit->get_meta( '_elementor_global_classes_labels' );
+        $target_posts = $kit->get_meta( '_elementor_global_classes_post_ids' );
+        $target_repository = $repository::make( $kit )->set_preview( false );
+        $target_order = $target_repository->get_order();
+        if ( '' === $target_labels ) {
+            $target_labels = [];
+        }
+        if ( '' === $target_posts ) {
+            $target_posts = [];
+        }
+        if ( ! is_array( $target_labels ) || ! is_array( $target_order ) || ! is_array( $target_posts ) ) {
+            return $ids;
+        }
+        foreach ( $target_labels as $id => $label ) {
+            if ( ! self::global_id( $id ) || ! is_string( $label ) ) {
+                return $ids;
+            }
+        }
+        foreach ( $target_order as $id ) {
+            if ( ! self::global_id( $id ) ) {
+                return $ids;
+            }
+        }
+        foreach ( $target_posts as $id => $post_id ) {
+            if ( ! self::global_id( $id ) || ! self::post_id( $post_id ) ) {
+                return $ids;
+            }
+        }
+        // documents->get($base_id) can redirect to the translated kit in this context.
+        $source = new $kit_class( [ 'post_id' => $base_id ] );
+        if ( self::post_id( $source->get_id() ) !== $base_id ) {
+            return $ids;
+        }
+        $labels = $repository::make( $source )->set_preview( false )->all_labels();
+        if ( ! is_array( $labels ) ) {
+            return $ids;
+        }
+        $counts = [];
+        foreach ( $labels as $id => $label ) {
+            if ( ! self::global_id( $id ) || ! is_string( $label ) ) {
+                return $ids;
+            }
+            $counts[ $label ] = ( $counts[ $label ] ?? 0 ) + 1;
+        }
+        foreach ( $ids as $position => $id ) {
+            if ( ! self::global_id( $id ) || ! isset( $labels[ $id ] )
+                || array_key_exists( $id, $target_labels ) || in_array( $id, $target_order, true )
+                || array_key_exists( $id, $target_posts )
+                || in_array( $id, $target_labels, true ) ) {
+                continue;
+            }
+            $label = $labels[ $id ];
+            // Only unambiguous, single CSS identifiers. Unknown names remain native.
+            if ( 1 !== $counts[ $label ] || self::global_id( $label )
+                || 1 !== preg_match( '/^-?[_a-zA-Z][_a-zA-Z0-9-]*$/D', $label )
+                || in_array( $label, $target_labels, true ) ) {
+                continue;
+            }
+            $ids[ $position ] = $label;
+        }
+        return $ids;
+    }
+}
+
+add_filter( 'elementor/atomic-widgets/settings/transformers/classes', [ 'Netmilk_WPML_Global_Class_Labels', 'filter' ], 100 );
