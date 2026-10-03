@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+### Documentation
+
+- Record a post-release global-class rendering investigation: embedded translated templates used kits with empty class labels/order, leaving technical class IDs unresolved despite correct mappings in separate REST requests. The monitored output was unchanged across an active/inactive/reactivated 1.0.4 comparison. This is an observed rendering-context failure, not a demonstrated regression introduced by the adapter; historical import causality remains unverified.
+- Expand before/after translation acceptance to computed styles and global classes across languages, embedded templates and desktop/mobile viewports. Clarify that the earlier production HTTP/form-name baseline was not comprehensive visual certification. See the [findings and diagnostic procedure](docs/global-class-rendering.md). No runtime fix, version bump or replacement release asset accompanies this documentation update.
+
 ### Added
 
 - Add a synthetic legacy-master boundary scenario (45 development scenarios; 44 at the 1.0.4 release). Verify numeric modern-source extraction/import and source immutability while preserving native handling of old `html-v3` origins; no automatic target migration is implied.
