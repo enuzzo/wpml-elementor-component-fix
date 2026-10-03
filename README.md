@@ -13,9 +13,13 @@
 
 Built by **Netmilk Studio**. Temporary by design, reusable across sites. Independent community project; not affiliated with or endorsed by WPML or Elementor.
 
-**Current release: [1.0.4](https://github.com/enuzzo/wpml-elementor-component-fix/releases/tag/v1.0.4).** It combines the original component-override adapter with form-name, direct master-text and select-option compatibility. Two fresh-job translation cycles passed on one recorded live stack. See the [release validation and limits](docs/releases/1.0.4.md), [changelog](CHANGELOG.md) and commit-specific [CI results](https://github.com/enuzzo/wpml-elementor-component-fix/actions/workflows/tests.yml). Live acceptance covers the tested fixture; it is not universal compatibility certification.
+**Current release: [1.0.5](https://github.com/enuzzo/wpml-elementor-component-fix/releases/tag/v1.0.5).** It retains the component, form-name, master-text and select-option adapters and adds a guarded fallback for global classes in translated kits. See the [release validation and limits](docs/releases/1.0.5.md), [changelog](CHANGELOG.md) and [CI results](https://github.com/enuzzo/wpml-elementor-component-fix/actions/workflows/tests.yml). Acceptance on one recorded stack is not universal compatibility certification.
 
-**Development branch: 1.0.5 candidate, not a public release.** A guarded frontend fallback recovers unresolved global-class labels from the configured source kit when WPML confirms the translated-kit relationship. It preserves native output, target-owned and local classes, and excludes editor/preview and non-frontend requests. It does not copy metadata, change CSS or modify translations. See the [candidate contract, frozen digest and live gates](docs/global-class-rendering.md#105-candidate-contract). The query-only mechanism was demonstrated separately; the packaged candidate still needs live acceptance.
+## What is new in 1.0.5?
+
+Some translated templates render technical global class IDs because their active translated kit lacks the label map used by the source kit's CSS. Version 1.0.5 resolves only the IDs left unresolved by Elementor, using an isolated source Kit after verifying its identity and bidirectional WPML association. Native output, local classes and target declarations take precedence. Editor/preview and non-frontend requests are excluded. No kit metadata, CSS, language state or translations are changed by the fallback. See the [contract and diagnostic evidence](docs/global-class-rendering.md#105-contract).
+
+**Live acceptance — 2026-10-03:** the exact frozen package was installed on one recorded stack. All 24 anonymous page checks had zero unresolved global IDs, down from 126 occurrences across 18 pages. Twelve pages passed the recorded desktop/mobile class and computed-style checks. Six fresh WPML template jobs completed native import with 84 existing translated segments preserved byte for byte; the rendering remained correct afterward. REST-visible metadata hashes matched for all 40 objects compared. No real form submission was performed, and this regression cycle reused existing translations rather than testing new source edits. See the [full validation matrix](docs/releases/1.0.5.md).
 
 ## What is new in 1.0.4?
 
@@ -35,7 +39,7 @@ Some V4 forms store their name as a wrapped string, while WPML's configuration p
 
 ## Validation and before/after checks
 
-**Rendering limitation found after release — 2026-10-03:** a separate production-page investigation found unresolved global class IDs while embedded translated templates rendered with a kit whose class labels/order were empty. The source-language kit had the expected mapping. The monitored class output stayed identical with 1.0.4 active, inactive and reactivated. This identifies a rendering-context problem; it does not establish when the translated kit state originated or exclude historical import effects. **1.0.4 does not fix global-class/kit resolution.** See the [diagnostic findings and acceptance checks](docs/global-class-rendering.md). The earlier demo cycles and eight-page HTTP/form-name baseline were not a comprehensive visual audit.
+**Rendering limitation found after release — 2026-10-03:** a separate production-page investigation found unresolved global class IDs while embedded translated templates rendered with a kit whose class labels/order were empty. The source-language kit had the expected mapping. The monitored class output stayed identical with 1.0.4 active, inactive and reactivated. This identifies a rendering-context problem; it does not establish when the translated kit state originated or exclude historical import effects. **1.0.5 addresses the demonstrated missing-map case; 1.0.4 has no such fallback.** See the [diagnostic findings and acceptance checks](docs/global-class-rendering.md). The earlier demo cycles and eight-page HTTP/form-name baseline were not a comprehensive visual audit.
 
 The development suite now has 63 synthetic scenarios (44 at the 1.0.4 release), including 12 select-option scenarios and 18 frontend global-class scenarios. Master-origin checks cover native delegation, runtime probes, active-field/cache behavior and conservative fallback. Form-name checks remain configuration-level guards. A separate local diagnostic exercised the installed native node-handler source with environment stubs; it does not certify a WordPress translation cycle. The earlier 1.0.2 package remains frozen, and its [form-name diagnosis](docs/form-name-compatibility.md) records historical test evidence separately.
 
@@ -69,6 +73,7 @@ This adapter targets **explicit instance text overrides stored as `escaped-html`
 | V4 `e-form` nested name | Additional `form-name>value` registration with native `field_id` `form-name`; existing nested/custom registrations retained |
 | Direct exposed heading/paragraph master text | Native node-handler delegation with temporary type conversion; runtime probes; no registry writes or null/forwarded-binding resolution |
 | Typed select-option labels | Native item-handler delegation; stable in-memory item IDs; technical values preserved; zero labels returned locally and preserved in live data/rendering |
+| Unresolved global classes in a verified translated kit | Frontend label fallback from the configured source kit; target declarations preserved; no persistent writes |
 | Settings, database tables, frontend scripts, network calls, telemetry | None added |
 
 **WPML still owns the translation job and applies the translation.** The plugin does not independently write secondary-language Elementor pages or translate text itself.
@@ -85,7 +90,7 @@ flowchart LR
 
 ## Install and verify
 
-1. Download **`netmilk-wpml-component-compat-1.0.4.zip`** from [Releases](https://github.com/enuzzo/wpml-elementor-component-fix/releases/latest). Use the release asset; GitHub's source-code ZIP contains the repository, not an installable plugin at its root.
+1. Download **`netmilk-wpml-component-compat-1.0.5.zip`** from [Releases](https://github.com/enuzzo/wpml-elementor-component-fix/releases/latest). Use the release asset; GitHub's source-code ZIP contains the repository, not an installable plugin at its root.
 2. In WordPress, open **Plugins → Add New → Upload Plugin**, upload the ZIP and activate **Netmilk — WPML Elementor Component Fix**.
 3. Start with a draft source page containing two component instances with different explicit text overrides. Keep a backup and use your normal WPML local-translator workflow.
 4. Create **fresh translation jobs**, export XLIFF 1.2, and confirm that the expected source texts are present. Existing exports do not gain missing fields retroactively.
@@ -105,7 +110,7 @@ Updates are manual through GitHub release ZIPs. The plugin does not install an u
 | Elementor | V4 `e-component` instances with explicit `escaped-html` overrides |
 | WPML | Existing `WPML\PB\Elementor\V4\Component\Overrides` handler using the supported untyped method contract |
 | Regression tests | 63 development scenarios (44 at the 1.0.4 release) with original synthetic doubles, including component behavior, form registration, master origins, select options and global-class fallback; 15 scenarios in published 1.0.1 |
-| Live integration acceptance | Two cycles on one recorded stack; [scope, versions and limits](docs/releases/1.0.4.md) |
+| Live integration acceptance | 1.0.5 rendering and native reimport on one recorded stack; [scope, versions and limits](docs/releases/1.0.5.md). Earlier source-edit cycles belong to the 1.0.4 record. |
 
 The implementation was informed by a handler contract observed in WPML 4.9.7. Public tests contain original synthetic examples, **not** WPML vendor code or client exports. CI is a PHP/contract check, not a substitute for a real WordPress + Elementor + WPML export/import/render test.
 
@@ -117,7 +122,7 @@ Activation does not migrate old translated masters. A later read-only audit foun
 
 The plugin checks native plain-text and HTML extraction/import using synthetic data and caches completed support decisions within the request. Exceptions leave the handler unchanged and allow a later filter call to retry. If both probes pass, it leaves the native handler in place. This is a **bypass**, not automatic deactivation or uninstallation.
 
-After an official update, deactivate the adapter on a test site and run a **fresh** translation cycle against the actual fields you use. If export, native import and the rendered page all work, delete it from Plugins. It owns no persistent data. If native support is still incomplete, future jobs may omit text again after deactivation.
+After an official update, deactivate the adapter on a test site and run a **fresh** translation cycle against the actual fields you use. Also verify global-class resolution and computed styles in translated templates. If export, native import and the rendered page all work, delete it from Plugins. It owns no persistent data. If native support is still incomplete, future jobs may omit text again and the class-label fallback no longer runs after deactivation.
 
 ## FAQ
 
@@ -131,7 +136,7 @@ Not in general. The plugin adapts direct exposed heading/paragraph `escaped-html
 
 ### Will it fix every Elementor V4 button or custom widget?
 
-No. It targets `e-component` override values, nested `e-form` names, direct exposed heading/paragraph origins and typed select-option labels. Other master properties, custom controls, form fields/actions and styling remain outside scope. See [WPML's custom Elementor widget documentation](https://wpml.org/documentation/support/multilingual-tools/registering-custom-elementor-widgets-for-translation/) for a different integration problem.
+No. It targets `e-component` override values, nested `e-form` names, direct exposed heading/paragraph origins and typed select-option labels. Version 1.0.5 additionally handles the demonstrated missing global-class label map in a verified translated kit. Other master properties, custom controls, form fields/actions and general styling problems remain outside scope. See [WPML's custom Elementor widget documentation](https://wpml.org/documentation/support/multilingual-tools/registering-custom-elementor-widgets-for-translation/) for a different integration problem.
 
 ### Can I reuse it across different sites and languages?
 
@@ -150,6 +155,6 @@ php tests/run.php
 python3 scripts/build.py
 ```
 
-The build uses an explicit payload allowlist and deterministic ZIP metadata. Current development output: `dist/netmilk-wpml-component-compat-1.0.5.zip` and `dist/SHA256SUMS`. Packages contain only the PHP entrypoint, WordPress readme and GPL license, inside one plugin folder. Building locally does not publish a release. The official 1.0.4 asset is byte-identical to the frozen live-tested candidate; its bundled readme retains historical candidate wording. GitHub release notes and this repository record final acceptance. Preserve earlier frozen packages.
+The build uses an explicit payload allowlist and deterministic ZIP metadata. Current output: `dist/netmilk-wpml-component-compat-1.0.5.zip` and `dist/SHA256SUMS`. Packages contain only the PHP entrypoint, WordPress readme and GPL license, inside one plugin folder. Building locally does not publish a release. The official 1.0.5 asset is byte-identical to the frozen live-tested candidate; its bundled readme retains historical candidate wording. GitHub release notes and this repository record final acceptance. Preserve earlier frozen packages.
 
 [Contributing](CONTRIBUTING.md) · [Changelog](CHANGELOG.md) · [GPL-2.0-or-later](LICENSE)

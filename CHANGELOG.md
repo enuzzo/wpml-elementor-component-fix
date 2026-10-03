@@ -2,22 +2,28 @@
 
 ## [Unreleased]
 
-### 1.0.5 candidate — not released
+No pending changes recorded.
+
+## [1.0.5] — 2026-10-03
+
+### Fixed
 
 - Add a frontend-only fallback after Elementor's native class transformer. Resolve only remaining global IDs from the configured source kit's ordered labels, with bidirectional WPML kit mapping, published-kit checks and an isolated source Kit whose identity is verified. The normal document getter may redirect a source ID to its translated kit.
 - Preserve native resolved names, local classes and target declarations found in labels, order or class post IDs, including incomplete declarations. Reject ambiguous/colliding labels and unknown contracts. Exclude editor/preview, admin, REST, AJAX and CLI; perform no persistent writes, language switching or CSS regeneration.
-- Keep all four 1.0.4 translation filters unchanged. Add 18 original global-class scenarios, bringing the development suite to 63. A separate query-only proof resolved the monitored IDs; it was not an installation or acceptance test of this packaged candidate. Live CSS/computed-style and translation regression checks remain pending.
-- Freeze the installable 17,923-byte candidate ZIP with SHA-256 `f29eddb6b429a3638c3e75e7e6731bea1abcd8294f4fd248d9bfa5821b3f4844`. No tag or public release is created; the official 1.0.4 artifact remains unchanged. See the [candidate gates](docs/global-class-rendering.md#105-candidate-contract).
+- Keep all four 1.0.4 translation filters unchanged.
+
+### Validation and limits
+
+- Add 18 original global-class scenarios and the post-1.0.4 legacy-master boundary scenario: 63 isolated public scenarios in total. Lint, tests and packaging pass on the PHP 7.4/8.1/8.3/8.5 CI matrix.
+- The exact frozen package passed the recorded live class-resolution acceptance on one stack: 24 anonymous pages with zero unresolved global IDs, compared with 126 occurrences across 18 pages before installation. Twelve pages were checked at desktop 1280 px and mobile 375 px, including navigation variants and form/upload styling.
+- Six fresh WPML jobs for navigation and form templates completed native import in English, French and German. All 84 existing translated segments and the six XLIFF files were preserved byte for byte; the final offline guard reported zero errors and zero unreviewed warnings. Rendering remained correct after native import and a separately recorded hosting-cache purge.
+- REST-visible metadata hashes were identical for all 40 compared objects; only the modification timestamps of the six imported templates changed. This is not a complete database audit. No real form submission or new source-edit/reordering cycle was performed in this acceptance. Earlier source-edit coverage belongs to the separate 1.0.4 evidence. See the [1.0.5 validation matrix](docs/releases/1.0.5.md).
+- Publish the exact 17,923-byte tested ZIP, SHA-256 `f29eddb6b429a3638c3e75e7e6731bea1abcd8294f4fd248d9bfa5821b3f4844`. The packaged readme retains candidate wording to preserve the verified bytes; repository documentation and release notes record acceptance. The official 1.0.4 artifact remains unchanged.
 
 ### Documentation
 
-- Record a post-release global-class rendering investigation: embedded translated templates used kits with empty class labels/order, leaving technical class IDs unresolved despite correct mappings in separate REST requests. The monitored output was unchanged across an active/inactive/reactivated 1.0.4 comparison. This is an observed rendering-context failure, not a demonstrated regression introduced by the adapter; historical import causality remains unverified.
-- Expand before/after translation acceptance to computed styles and global classes across languages, embedded templates and desktop/mobile viewports. Clarify that the earlier production HTTP/form-name baseline was not comprehensive visual certification. See the [findings and diagnostic procedure](docs/global-class-rendering.md). No runtime fix, version bump or replacement release asset accompanies this documentation update.
-
-### Added
-
-- Add a synthetic legacy-master boundary scenario (45 development scenarios; 44 at the 1.0.4 release). Verify numeric modern-source extraction/import and source immutability while preserving native handling of old `html-v3` origins; no automatic target migration is implied.
-- Document a read-only finding of mismatched origin types in older translated masters and a gated [fresh master-job recovery procedure](docs/legacy-master-recovery.md). A subsequent native master job recovered the affected resolved headings and anonymous page output despite omission of the numeric `"1"` from XLIFF. Correct the earlier requirement for a numeric unit; distinguish functional recovery from unverified raw post-import types. Fresh demo acceptance alone did not establish this result. Runtime, version and published 1.0.4 ZIP are unchanged.
+- Record the global-class rendering diagnosis and require before/after class, CSS and computed-style checks. The controlled 1.0.4 toggle did not demonstrate an immediate adapter regression; the historical origin of incomplete translated-kit metadata remains unverified.
+- Include the previously documented [legacy master recovery](docs/legacy-master-recovery.md): a fresh native master job recovered resolved numeric headings despite omission of the numeric unit from XLIFF. The synthetic boundary test does not imply automatic migration of old targets.
 
 ## [1.0.4] — 2026-10-02
 

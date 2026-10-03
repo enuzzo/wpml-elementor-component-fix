@@ -1,6 +1,6 @@
 # Global classes in translated template rendering
 
-Status: diagnostic evidence and an unreleased 1.0.5 candidate recorded on 2026-10-03. **No global-class or kit-resolution fix is included in 1.0.4.** This record supplements the [release validation](releases/1.0.4.md); it does not replace its historical demo results.
+Status: diagnostic evidence and accepted 1.0.5 release recorded on 2026-10-03. **No global-class or kit-resolution fix is included in 1.0.4.** This record supplements the [release validation](releases/1.0.4.md); it does not replace its historical demo results.
 
 ## Observed failure
 
@@ -34,29 +34,29 @@ The earlier fresh-job demo cycles established the reported translation behavior 
 4. If raw global IDs remain in HTML, inspect the active kit, language, preview state and ordered label map **during the affected element's rendering**. Keep any temporary instrumentation gated, observational and outside the distributed plugin, and remove it after the test. A REST request or top-level kit marker is not a substitute.
 5. Before attributing a regression, separate the adapter toggle, cache operations and content imports in the evidence. Preserve earlier snapshots where available. Do not repair translated content or copy kit metadata merely to make acceptance pass.
 
-## 1.0.5 candidate contract
+## 1.0.5 contract
 
-The candidate implements a fallback after the native class transformer. It requires both WPML mappings (translated kit to default-language kit and back), and the source must be the configured active kit. Both posts must be published Elementor library kits. The source is instantiated directly and its ID checked; the document manager was observed redirecting an explicit source ID to the translated kit in the failing context.
+Version 1.0.5 implements a fallback after the native class transformer. It requires both WPML mappings (translated kit to default-language kit and back), and the source must be the configured active kit. Both posts must be published Elementor library kits. The source is instantiated directly and its ID checked; the document manager was observed redirecting an explicit source ID to the translated kit in the failing context.
 
 Only remaining global IDs with unambiguous source labels are replaced. Target labels, ordered IDs and class post IDs each prevent replacement, even when incomplete. Native output and local classes remain unchanged. Editor/preview, admin, REST, AJAX and CLI requests are excluded. Exceptions, unfamiliar contracts and ambiguous or unsupported CSS names return native output. No metadata, language state, active-kit setting, CSS or saved Elementor data is changed.
 
 The implementation reads ordered label maps through an explicit repository; it avoids class-post lookup methods that may clean up missing records. Relevant native contracts were inspected in the public Elementor 4.3.3 sources: [Kit construction](https://github.com/elementor/elementor/blob/4.3.3/core/kits/documents/kit.php), [document construction](https://github.com/elementor/elementor/blob/4.3.3/core/base/document.php) and [global-class repository](https://github.com/elementor/elementor/blob/4.3.3/modules/global-classes/global-classes-repository.php). Third-party native hooks and future dependency behavior are outside the synthetic harness.
 
-The site session reported that global-class metadata fields were configured as ignored by WPML, while translated kits lacked those fields. Merely updating the kit translation job is therefore not a demonstrated alternative on that stack. No translation preferences were changed for this candidate. This is not a claim that all WPML installations share that configuration.
+The site session reported that global-class metadata fields were configured as ignored by WPML, while translated kits lacked those fields. Merely updating the kit translation job is therefore not a demonstrated alternative on that stack. No translation preferences were changed for this fix. This is not a claim that all WPML installations share that configuration.
 
 ### Evidence and immutable package
 
 - 63 synthetic scenarios pass locally, including 18 new global-class scenarios; all 14 PHP files pass lint on PHP 8.5.11. Python 3.14.7 verifies the exact three-file installable ZIP. These are not CMS tests.
 - A separate temporary query-only proof used an explicit source Kit and resolved the monitored IDs in five anonymous page requests across four languages. Archived after-transform output was inspected read-only. That proof had fewer guards than the candidate and did not certify its installation or computed styles. Temporary instrumentation was reported removed.
-- The four translation filters are unchanged from 1.0.4. New translation regression cycles and native-support/removal checks remain necessary before release.
+- The exact frozen package subsequently passed the recorded class-resolution acceptance: 24 anonymous page checks, 12 desktop/mobile browser comparisons and six completed native WPML template jobs preserving 84 existing translated segments. The four translation filters remain unchanged. See the [release matrix and limits](releases/1.0.5.md); native-support/removal checks and acceptance on other stacks remain separate.
 
-Frozen candidate: `dist/candidates/1.0.5/f29eddb6b429a3638c3e75e7e6731bea1abcd8294f4fd248d9bfa5821b3f4844/netmilk-wpml-component-compat-1.0.5.zip`, **17,923 bytes**. A separate `SHA256SUMS` accompanies it. No tag or public release has been created.
+Official release asset, preserved from the frozen candidate: `dist/candidates/1.0.5/f29eddb6b429a3638c3e75e7e6731bea1abcd8294f4fd248d9bfa5821b3f4844/netmilk-wpml-component-compat-1.0.5.zip`, **17,923 bytes**. A separate `SHA256SUMS` accompanies it. The packaged readme retains candidate-era wording to preserve tested bytes. Repository documentation and the v1.0.5 release notes record the final status.
 
 ```text
 f29eddb6b429a3638c3e75e7e6731bea1abcd8294f4fd248d9bfa5821b3f4844  netmilk-wpml-component-compat-1.0.5.zip
 ```
 
-### Live gates before release
+### Live gates for future changes and other sites
 
 1. Record backup/rollback, installed versions and the candidate checksum. Capture translated texts, class output, screenshots and computed styles before installation; install only under the site's separate authorization.
 2. Compare the same source/translated pages after activation and before imports, anonymously at desktop/mobile widths. Cover embedded templates, headings, buttons, forms and intentional navigation variants. Inspect loaded CSS selectors: the kit identity guard alone cannot prove that the matching stylesheet was generated or delivered.

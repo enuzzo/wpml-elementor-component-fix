@@ -39,7 +39,7 @@ Inspect [.github/workflows/tests.yml](../.github/workflows/tests.yml) when chang
 
 ```sh
 gh run list --workflow tests.yml --limit 5
-gh release view v1.0.4
+gh release view v1.0.5
 ```
 
 Check the run's commit and individual jobs before claiming CI success for a change. An upstream run cannot validate uncommitted local documentation. Local use of PHP 8.5 does not by itself establish PHP 7.4 compatibility.
@@ -48,7 +48,7 @@ Check the run's commit and individual jobs before claiming CI success for a chan
 
 The builder reads the version from the PHP header, checks the WordPress stable tag, builds from an explicit allowlist, and verifies archive integrity and byte-for-byte payload equality. It uses fixed ZIP timestamps and permissions. `dist/` is generated and excluded from Git.
 
-For the current 1.0.5 development candidate, inspect the archive and verify its separate checksum:
+For the current 1.0.5 release, inspect the archive and verify its separate checksum:
 
 ```sh
 python3 -m zipfile -l dist/netmilk-wpml-component-compat-1.0.5.zip
@@ -90,9 +90,9 @@ This is a historical baseline, not proof of future checkout or dependency state:
 - Local setup checks passed with PHP 8.5.11 and Python 3.14.7: all six PHP files passed lint, all 15 synthetic scenarios passed, and the build verified its allowlisted payload. The generated ZIP's SHA-256 was `b8b1366e57b3a281baca601ec48e67ca3867442beba20fb281df03a6eb0432b5`, matching the published release asset's digest.
 - The plugin declares PHP 7.4+ and WordPress 6.5+. No WordPress stack was installed for this setup; live export/import/render certification remains open.
 
-## Current candidate — 1.0.5
+## Current release — 1.0.5
 
-The candidate adds only the guarded frontend global-class fallback; the four translation filters remain unchanged. Use the [frozen artifact and acceptance checklist](global-class-rendering.md#105-candidate-contract). Do not overwrite frozen candidates or publish a release before separate live acceptance. Record installation, CSS/computed-style checks and fresh translation regression cycles independently.
+The release adds only the guarded frontend global-class fallback; the four translation filters remain unchanged. Use the [release record](releases/1.0.5.md) and [acceptance checklist](global-class-rendering.md#105-contract). The official asset must remain byte-identical to the tested frozen candidate, including its historical packaged readme. Record installation, CSS/computed-style checks and fresh translation regression cycles independently on each new stack.
 
 ## End-of-session handoff
 
