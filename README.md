@@ -33,13 +33,15 @@ Some V4 forms store their name as a wrapped string, while WPML's configuration p
 
 ## Validation and before/after checks
 
+**Rendering limitation found after release — 2026-10-03:** a separate production-page investigation found unresolved global class IDs while embedded translated templates rendered with a kit whose class labels/order were empty. The source-language kit had the expected mapping. The monitored class output stayed identical with 1.0.4 active, inactive and reactivated. This identifies a rendering-context problem; it does not establish when the translated kit state originated or exclude historical import effects. **1.0.4 does not fix global-class/kit resolution.** See the [diagnostic findings and acceptance checks](docs/global-class-rendering.md). The earlier demo cycles and eight-page HTTP/form-name baseline were not a comprehensive visual audit.
+
 The development suite now has 45 synthetic scenarios (44 at the 1.0.4 release), including 12 select-option scenarios. Master-origin checks cover native delegation, runtime probes, active-field/cache behavior and conservative fallback. Form-name checks remain configuration-level guards. A separate local diagnostic exercised the installed native node-handler source with environment stubs; it does not certify a WordPress translation cycle. The earlier 1.0.2 package remains frozen, and its [form-name diagnosis](docs/form-name-compatibility.md) records historical test evidence separately.
 
 Before accepting an update on another site:
 
 1. Record the installed versions and active adapters, prepare backup/rollback, and capture existing translations and a fresh draft XLIFF export **before updating**.
 2. After updating, check those existing translated pages **before any new import** for unintended changes. Isolate the plugin from any local form-name addon during the controlled test so the addon cannot mask its behavior.
-3. Generate fresh WPML jobs, verify one name segment per form and stable identities, translate only targets, and import through WPML. Compare rendered texts, markup, links and form names **after import**, including without authentication.
+3. Generate fresh WPML jobs, verify one name segment per form and stable identities, translate only targets, and import through WPML. Compare rendered texts, markup, links and form names **after import**, including without authentication. At matching desktop/mobile viewports, compare global classes and computed styles for headings, buttons and form layouts, including embedded translated templates; HTTP 200 and correct text alone do not establish visual acceptance.
 4. Run the [select-option gates](docs/select-option-compatibility.md#site-acceptance) with duplicate labels, unique technical values, `"0"`, blank labels and reordering. Run the separate [master-origin gates](docs/master-origin-compatibility.md#native-test-gates): fresh master exports, native import, raw element tree/registry comparison and inherited-page rendering.
 5. Change a source form name, option label and master text, then repeat the cycle. Verify source immutability, preserved wrapper metadata and absence of new duplicate fields; restore the previous configuration if a regression appears.
 
